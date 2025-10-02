@@ -6,4 +6,4 @@ run:
 	dummy
 
 clean:
-	rmdir /S /Q build
+	del dummy.exe
