@@ -1,8 +1,10 @@
+COMPILE=gcc src/main.c src/game/player.c src/game/zombie.c -Wall -o dummy -I include/ -L lib/ -lraylib -lopengl32 -lgdi32 -lwinmm -lm
+
 build:
-	gcc src/main.c -Wall -o dummy -I include/ -L lib/ -lraylib -lopengl32 -lgdi32 -lwinmm
+	${COMPILE}
 
 run:
-	gcc src/main.c src/game/player.c src/game/zombie.c -Wall -o dummy -I include/ -L lib/ -lraylib -lopengl32 -lgdi32 -lwinmm -lm
+	${COMPILE}
 	dummy
 
 clean:

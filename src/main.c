@@ -15,9 +15,9 @@ int main(void)
 
     Player* localPlayer = ConstructPlayer(100, 100, 100, 100);
     
-    Zombie* allZombies[ZOMBIE_COUNT];
-    if (!allZombies) return -1;
-    allZombies[0] = ConstructZombie(300, 300, 100, 100);
+    Zombie allZombies[ZOMBIE_COUNT];
+    // if (!allZombies) return -1;
+    allZombies[0] = *ConstructZombie(300, 300, 100, 100);
 
     while (!WindowShouldClose()) {
         // Updating objects
@@ -33,12 +33,14 @@ int main(void)
         DrawFPS(10, screenHeight - 30);
 
         DrawPlayer(localPlayer);
-        // for (int i = 0; i < ZOMBIE_COUNT; i++) DrawZombie(allZombies[i]);
+        for (int i = 0; i < ZOMBIE_COUNT; i++) {
+            DrawZombie(&allZombies[i]);
+        }
 
         EndDrawing();
     }
 
-    free(allZombies);
+    //free(allZombies);
     free(localPlayer);
 
     CloseWindow();

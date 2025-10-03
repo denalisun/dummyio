@@ -14,6 +14,5 @@ typedef struct {
 Zombie* ConstructZombie(float x, float y, float health, float maxHealth);
 void UpdateZombie(Zombie *zm, Player *plr);
 void DrawZombie(Zombie *zm);
-// void ZombieMoveToPlayer(Zombie *zm, Player *plr);
 
 #endif
