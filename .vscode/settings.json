@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "cmath": "c",
+        "stdio.h": "c",
+        "world.h": "c"
+    }
+}

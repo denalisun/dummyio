@@ -1,4 +1,5 @@
-COMPILE=gcc src/main.c src/game/player.c src/game/zombie.c -Wall -o dummy -I include/ -L lib/ -lraylib -lopengl32 -lgdi32 -lwinmm -lm
+SRC=src/main.c src/game/player.c src/game/zombie.c src/game/world.c
+COMPILE=gcc ${SRC} -Wall -o dummy -I include/ -L lib/ -lraylib -lopengl32 -lgdi32 -lwinmm -lm -lbox2d
 
 build:
 	${COMPILE}

@@ -14,11 +14,13 @@ Player* ConstructPlayer(float x, float y, float health, float maxHealth) {
 }
 
 void UpdatePlayer(Player *plr) {
-    plr->x += ((int)IsKeyDown(KEY_D) - (int)IsKeyDown(KEY_A)) * ((float)500 * GetFrameTime());
-    plr->y += ((int)IsKeyDown(KEY_S) - (int)IsKeyDown(KEY_W)) * ((float)500 * GetFrameTime());
+    plr->x += ((int)IsKeyDown(KEY_D) - (int)IsKeyDown(KEY_A)) * ((float)250 * GetFrameTime());
+    plr->y += ((int)IsKeyDown(KEY_S) - (int)IsKeyDown(KEY_W)) * ((float)250 * GetFrameTime());
     
     const Vector2 mousePos = GetMousePosition();
     plr->rotation = atan2(mousePos.y - plr->y, mousePos.x - plr->x);
+    
+    //TODO: Detect collision
 }
 
 void DrawPlayer(Player *plr) {

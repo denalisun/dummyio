@@ -1,6 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "box2d.h"
+
 typedef struct {
     float x;
     float y;

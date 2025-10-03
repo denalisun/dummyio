@@ -15,6 +15,10 @@ Zombie* ConstructZombie(float x, float y, float health, float maxHealth) {
 
 void UpdateZombie(Zombie *zm, Player *plr) {
     zm->rotation = atan2(zm->y - plr->y, zm->x - plr->x);
+    zm->x -= cos(zm->rotation) * ((float)100 * GetFrameTime());
+    zm->y -= sin(zm->rotation) * ((float)100 * GetFrameTime());
+
+    //TODO: Detect Collision using Box2D
 }
 
 void DrawZombie(Zombie *zm) {
