@@ -36,18 +36,16 @@ int main(void)
 
     Player* localPlayer = ConstructPlayer(100, 100, 100, 100);
     WorldSetPlayer(world, localPlayer);
-    
-    Zombie** allZombies = calloc(ZOMBIE_COUNT, sizeof(Zombie*));
-    if (!allZombies) return -1;
+
     for (int i = 0; i < ZOMBIE_COUNT; i++) {
-        allZombies[i] = ConstructZombie(300 + (i * 25), 100, 100, 100);
+        WorldAddZombie(world, 300 + (i * 25), 100);
     }
 
     while (!WindowShouldClose()) {
         // Updating objects
         UpdatePlayer(localPlayer);
         for (int i = 0; i < ZOMBIE_COUNT; i++) {
-            Zombie* zm = allZombies[i];
+            Zombie* zm = world->AllZombies[i];
             if (zm != 0) UpdateZombie(zm, localPlayer);
         }
         
@@ -58,14 +56,14 @@ int main(void)
         
         DrawPlayer(localPlayer);
         for (int i = 0; i < ZOMBIE_COUNT; i++) {
-            if (allZombies[i] != 0) DrawZombie(allZombies[i]);
+            if (world->AllZombies[i] != 0) DrawZombie(world->AllZombies[i]);
         }
         
         DrawFPS(10, screenHeight - 30);
         EndDrawing();
     }
 
-    free(allZombies);
+    free(world->AllZombies);
     free(localPlayer);
 
     CloseWindow();

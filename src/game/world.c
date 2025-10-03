@@ -8,7 +8,7 @@
 GameWorld* ConstructWorld(int WorldMap[18][32]) {
     GameWorld* p = malloc(sizeof(GameWorld));
     p->CurrentWave = 0;
-    p->AllZombies = 0;
+    p->AllZombies = calloc(ZOMBIE_COUNT, sizeof(Zombie*));
     p->LocalPlayer = 0;
     memcpy(p->WorldMap, WorldMap, sizeof(int[18][32]));
     return p;
@@ -20,13 +20,15 @@ void WorldSetPlayer(GameWorld* world, Player* plr) {
 
 void WorldAddZombie(GameWorld* world, float x, float y) {
     for (int i = 0; i < ZOMBIE_COUNT; i++) {
-        if (world->AllZombies[i] == 0) 
+        if (world->AllZombies[i] == 0) {
             world->AllZombies[i] = ConstructZombie(
                 x, 
                 y, 
                 100 * world->CurrentWave,
                 100 * world->CurrentWave
             );
+            break;
+        }
     }
 }
 
