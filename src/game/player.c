@@ -22,5 +22,5 @@ void UpdatePlayer(Player *plr) {
 }
 
 void DrawPlayer(Player *plr) {
-    DrawRectanglePro((Rectangle){plr->x, plr->y, 50, 50}, (Vector2){25, 25}, plr->rotation * RAD2DEG, WHITE);
+    DrawRectanglePro((Rectangle){plr->x, plr->y, 50, 50}, (Vector2){25, 25}, plr->rotation * RAD2DEG, (Color){0xff, 0xb3, 0x19, 0xff});
 }
