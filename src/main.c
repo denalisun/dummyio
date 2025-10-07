@@ -7,7 +7,7 @@
 
 int main(void)
 {
-    InitWindow(800, 600, "DUMMY");
+    InitWindow(1280, 720, "DUMMY");
     SetWindowState(FLAG_WINDOW_RESIZABLE);
     int screenWidth, screenHeight = GetScreenWidth(), GetScreenHeight();
     
@@ -33,16 +33,15 @@ int main(void)
     };
     GameWorld* world = ConstructWorld(baseWorldMap);
 
-    Player* localPlayer = ConstructPlayer(100, 100, 100, 100);
+    Player* localPlayer = ConstructPlayer(100, 100, 100, 100, world);
     WorldSetPlayer(world, localPlayer);
 
     Camera2D camera = { 0 };
     camera.rotation = 0;
     camera.zoom = 1.0f;
     
-    for (int i = 0; i < ZOMBIE_COUNT; i++) {
-        WorldAddZombie(world, 300 + (i * 25), 100);
-    }
+    for (int i = 0; i < ZOMBIE_COUNT; i++)
+        WorldAddZombie(world, 300 + (i * 100), 100);
 
     while (!WindowShouldClose()) {
         // Getting screen size

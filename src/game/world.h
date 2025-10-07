@@ -20,4 +20,6 @@ void WorldAddZombie(GameWorld* world, float x, float y);
 void WorldRenderMap(GameWorld* world);
 // void WorldSetWave(GameWorld* world);
 
+bool is_blocked(GameWorld* world, float x, float y);
+
 #endif

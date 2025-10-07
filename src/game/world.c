@@ -25,7 +25,8 @@ void WorldAddZombie(GameWorld* world, float x, float y) {
                 x, 
                 y, 
                 100 * world->CurrentWave,
-                100 * world->CurrentWave
+                100 * world->CurrentWave,
+                world
             );
             break;
         }
@@ -41,3 +42,10 @@ void WorldRenderMap(GameWorld* world) {
 }
 
 // void WorldSetWave(GameWorld* world);
+
+bool is_blocked(GameWorld* world, float x, float y) {
+    int tileX = (int)(x / 40);
+    int tileY = (int)(y / 40);
+
+    return world->WorldMap[tileY][tileX] == 1;
+}
