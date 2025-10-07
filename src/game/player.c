@@ -1,6 +1,6 @@
 #include "player.h"
-#include "raylib.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 Player* ConstructPlayer(float x, float y, float health, float maxHealth) {
@@ -10,6 +10,7 @@ Player* ConstructPlayer(float x, float y, float health, float maxHealth) {
     plr->rotation = 0;
     plr->health = health;
     plr->maxHealth = maxHealth;
+    plr->money = 500;
     return plr;
 }
 
@@ -18,11 +19,13 @@ void UpdatePlayer(Player *plr) {
     plr->y += ((int)IsKeyDown(KEY_S) - (int)IsKeyDown(KEY_W)) * ((float)250 * GetFrameTime());
     
     const Vector2 mousePos = GetMousePosition();
-    plr->rotation = atan2(mousePos.y - plr->y, mousePos.x - plr->x);
-    
-    //TODO: Detect collision
+    plr->rotation = atan2(mousePos.y - (GetScreenHeight() / 2.0f), mousePos.x - (GetScreenWidth() / 2.0f));
 }
 
 void DrawPlayer(Player *plr) {
     DrawRectanglePro((Rectangle){plr->x, plr->y, 50, 50}, (Vector2){25, 25}, plr->rotation * RAD2DEG, (Color){0xff, 0xb3, 0x19, 0xff});
+}
+
+Rectangle GetPlayerCollisionBox(Player* plr) {
+    return (Rectangle){plr->x, plr->y, 50, 50};
 }

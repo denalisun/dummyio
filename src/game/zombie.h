@@ -1,7 +1,6 @@
 #ifndef ZOMBIE_H
 #define ZOMBIE_H
 
-#include "box2d.h"
 #include "player.h"
 
 typedef struct {

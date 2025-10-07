@@ -5,8 +5,9 @@
 
 #include "player.h"
 #include "zombie.h"
+#include "state.h"
 
-typedef struct {
+typedef struct GameWorld {
     Player* LocalPlayer;
     Zombie** AllZombies;
     int WorldMap[18][32];
