@@ -17,8 +17,8 @@ Player* ConstructPlayer(float x, float y, float health, float maxHealth, GameWor
 }
 
 void UpdatePlayer(Player *plr) {
-    float x = plr->x + ((int)IsKeyDown(KEY_D) - (int)IsKeyDown(KEY_A)) * ((float)250 * GetFrameTime());
-    float y = plr->y + ((int)IsKeyDown(KEY_S) - (int)IsKeyDown(KEY_W)) * ((float)250 * GetFrameTime());
+    float x = ((int)IsKeyDown(KEY_D) - (int)IsKeyDown(KEY_A)) * ((float)250 * GetFrameTime());
+    float y = ((int)IsKeyDown(KEY_S) - (int)IsKeyDown(KEY_W)) * ((float)250 * GetFrameTime());
     
     const Vector2 mousePos = GetMousePosition();
     plr->rotation = atan2(mousePos.y - (GetScreenHeight() / 2.0f), mousePos.x - (GetScreenWidth() / 2.0f));
@@ -53,14 +53,18 @@ void UpdatePlayer(Player *plr) {
         }
     }
 
-    if (!is_blocked(plr->world, x, plr->y)) plr->x = x;
-    if (!is_blocked(plr->world, plr->x, y)) plr->y = y;
+    // Normalizing (making sure it isnt faster diagonally)
+    float newX = plr->x; float newY = plr->y;
+    float length = sqrtf(x*x + y*y);
+    if (length > 0) {
+        newX = ((x / length) * (250.0f * GetFrameTime())) + plr->x;
+        newY = ((y / length) * (250.0f * GetFrameTime())) + plr->y;
+    }
+
+    if (!is_blocked(plr->world, newX, plr->y)) plr->x = newX;
+    if (!is_blocked(plr->world, plr->x, newY)) plr->y = newY;
 }
 
 void DrawPlayer(Player *plr) {
     DrawRectanglePro((Rectangle){plr->x, plr->y, 50, 50}, (Vector2){25, 25}, plr->rotation * RAD2DEG, (Color){0xff, 0xb3, 0x19, 0xff});
-}
-
-Rectangle GetPlayerCollisionBox(Player* plr) {
-    return (Rectangle){plr->x, plr->y, 50, 50};
 }

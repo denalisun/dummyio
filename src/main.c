@@ -33,7 +33,7 @@ int main(void)
     };
     GameWorld* world = ConstructWorld(baseWorldMap);
 
-    Player* localPlayer = ConstructPlayer(100, 100, 100, 100, world);
+    Player* localPlayer = ConstructPlayer(200, 100, 100, 100, world);
     WorldSetPlayer(world, localPlayer);
 
     Camera2D camera = { 0 };
