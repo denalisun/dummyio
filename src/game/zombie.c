@@ -5,7 +5,8 @@
 #include <stdio.h>
 #include <math.h>
 
-Zombie* ConstructZombie(float x, float y, float health, float maxHealth, GameWorld* world) {
+Zombie* ConstructZombie(float x, float y, float health, float maxHealth, GameWorld* world)
+{
     Zombie* zm = malloc(sizeof(Zombie));
     zm->x = x;
     zm->y = y;
@@ -16,7 +17,8 @@ Zombie* ConstructZombie(float x, float y, float health, float maxHealth, GameWor
     return zm;
 }
 
-void UpdateZombie(Zombie *zm, Player *plr) {
+void UpdateZombie(Zombie *zm, Player *plr)
+{
     zm->rotation = atan2(zm->y - plr->y, zm->x - plr->x);
     float x = zm->x - cos(zm->rotation) * ((float)100 * GetFrameTime());
     float y = zm->y - sin(zm->rotation) * ((float)100 * GetFrameTime());
@@ -30,14 +32,14 @@ void UpdateZombie(Zombie *zm, Player *plr) {
         Rectangle ourRec = { 0 };
         ourRec.x = x;
         ourRec.y = y;
-        ourRec.width = 50;
-        ourRec.height = 50;
+        ourRec.width = 40;
+        ourRec.height = 40;
 
         Rectangle theirRec = { 0 };
         theirRec.x = them->x;
         theirRec.y = them->y;
-        theirRec.width = 50;
-        theirRec.height = 50;
+        theirRec.width = 40;
+        theirRec.height = 40;
 
         if (CheckCollisionRecs(ourRec, theirRec)) {
             float dx = x - them->x;
@@ -50,10 +52,17 @@ void UpdateZombie(Zombie *zm, Player *plr) {
         }
     }
 
-    zm->x = x;
-    zm->y = y;
+    // zm->x = x;
+    // zm->y = y;
+    if (!is_blocked(zm->world, x, zm->y)) zm->x = x;
+    if (!is_blocked(zm->world, zm->x, y)) zm->y = y;
 }
 
-void DrawZombie(Zombie *zm) {
-    DrawRectanglePro((Rectangle){zm->x, zm->y, 50, 50}, (Vector2){25, 25}, zm->rotation * RAD2DEG, GREEN);
+void DrawZombie(Zombie *zm)
+{
+    DrawRectanglePro(
+        (Rectangle){zm->x, zm->y, 40, 40},
+        (Vector2){20, 20},
+        zm->rotation * RAD2DEG,
+        GREEN);
 }

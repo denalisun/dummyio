@@ -2,6 +2,7 @@
 #include "game/player.h"
 #include "game/zombie.h"
 #include "game/world.h"
+#include "game/ui.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -76,7 +77,7 @@ int main(void)
 
         EndMode2D();
         
-        DrawFPS(10, screenHeight - 30);
+        DrawUI(world);
         EndDrawing();
     }
 
