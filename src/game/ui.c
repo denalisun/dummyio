@@ -8,7 +8,7 @@ void DrawUI(GameWorld* world)
     // Draw zombies left
     char zombiesBuffer[16];
     sprintf(zombiesBuffer, "%d Zombies Left", GetAliveZombies(world));
-    DrawText(zombiesBuffer, 10, 10, 34, GREEN);
+    DrawText(zombiesBuffer, 10, 10, 34, DARKGREEN);
 
     // Draw Round Number
     char roundBuffer[10];
