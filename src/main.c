@@ -3,6 +3,7 @@
 #include "game/zombie.h"
 #include "game/world.h"
 #include "game/ui.h"
+#include "game/gun.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -16,7 +17,7 @@ int main()
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-        {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+        {1,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,1},
         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
         {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,1},
@@ -34,15 +35,15 @@ int main()
     };
     GameWorld* world = ConstructWorld(baseWorldMap);
 
-    Player* localPlayer = ConstructPlayer(200, 100, 100, 100, world);
-    WorldSetPlayer(world, localPlayer);
-
     Camera2D camera = { 0 };
     camera.rotation = 0;
     camera.zoom = 1.0f;
-    
-    for (int i = 0; i < ZOMBIE_COUNT; i++)
-        WorldAddZombie(world, 300 + (i * 100), 100);
+
+    Player* localPlayer = ConstructPlayer(200, 100, 100, 100, world, &camera);
+    WorldSetPlayer(world, localPlayer);
+
+    Gun* testGun = ConstructGun("TestGun", 10, 10, 10, INT_MAX, INT_MAX);
+    GiveGun(localPlayer, testGun);
 
     while (!WindowShouldClose()) {
         // Getting screen size
@@ -56,16 +57,29 @@ int main()
         }
 
         UpdatePlayer(localPlayer);
-
-        // Do Collision
-
-        camera.target = (Vector2){localPlayer->x, localPlayer->y};
+        camera.target = (Vector2){ localPlayer->x, localPlayer->y };
         camera.offset = (Vector2){ screenWidth/2.0f, screenHeight/2.0f };
+
+        if (IsKeyPressed(KEY_F))
+        {
+            for (int i = 0; i < ZOMBIE_COUNT; i++)
+            {
+                if (world->AllZombies[i] == 0) continue;
+                world->AllZombies[i] = 0;
+            }
+        }
+
+        if (IsKeyPressed(KEY_C))
+        {
+            localPlayer->health -= 5.0f;
+        }
+
+        // Wave logic
+        WorldWaveLogic(world);
 
         // Rendering
         BeginDrawing();
         ClearBackground(BLACK);
-
         BeginMode2D(camera);
 
         WorldRenderMap(world);
@@ -76,7 +90,6 @@ int main()
         }
 
         EndMode2D();
-        
         DrawUI(world);
         EndDrawing();
     }

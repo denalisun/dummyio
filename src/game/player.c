@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 
-Player* ConstructPlayer(float x, float y, float health, float maxHealth, GameWorld* world)
+Player* ConstructPlayer(float x, float y, float health, float maxHealth, GameWorld* world, Camera2D* camera)
 {
     Player* plr = malloc(sizeof(Player));
     plr->x = x;
@@ -12,13 +12,31 @@ Player* ConstructPlayer(float x, float y, float health, float maxHealth, GameWor
     plr->rotation = 0;
     plr->health = health;
     plr->maxHealth = maxHealth;
+    plr->timeSinceHit = 0.0f;
     plr->money = 500;
     plr->world = world;
+    plr->AllGuns = calloc(GUN_SIZE, sizeof(Gun*));
+    plr->EquippedGun = 0;
+    plr->bIsADS = false;
+    plr->camera = camera;
     return plr;
 }
 
 void UpdatePlayer(Player *plr)
 {
+    if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
+    {
+        if (plr->camera->zoom < 1.2f)
+        {
+            plr->camera->zoom += 1 * GetFrameTime();
+        }
+    }
+    else
+    {
+        if (plr->camera->zoom > 1.0f) plr->camera->zoom -= 1 * GetFrameTime();
+        if (plr->camera->zoom < 1.0f) plr->camera->zoom += 1 * GetFrameTime();
+    }
+
     float x = ((int)IsKeyDown(KEY_D) - (int)IsKeyDown(KEY_A)) * ((float)250 * GetFrameTime());
     float y = ((int)IsKeyDown(KEY_S) - (int)IsKeyDown(KEY_W)) * ((float)250 * GetFrameTime());
     
@@ -66,12 +84,16 @@ void UpdatePlayer(Player *plr)
             {
                 x += (dx / dist) * 1.0f;
                 y += (dy / dist) * 1.0f;
+
+                plr->health -= 300 * GetFrameTime();
             }
         }
     }
 
     if (!is_blocked(plr->world, x, plr->y)) plr->x = x;
     if (!is_blocked(plr->world, plr->x, y)) plr->y = y;
+
+    if (plr->health < 0) plr->health = 0;
 }
 
 void DrawPlayer(Player *plr)
@@ -81,4 +103,31 @@ void DrawPlayer(Player *plr)
         (Vector2){20, 20},
         plr->rotation * RAD2DEG,
         (Color){0xff, 0xb3, 0x19, 0xff});
+}
+
+void SwapGun(Player *plr)
+{
+    plr->EquippedGun++;
+    if (plr->EquippedGun > (GUN_SIZE+1)) plr->EquippedGun = 0;
+}
+
+void GiveGun(Player *plr, Gun *gun)
+{
+    bool bIsSlotFree = false;
+    for (int i = 0; i < GUN_SIZE; i++)
+    {
+        if (plr->AllGuns[i] == 0) continue;
+        plr->AllGuns[i] = gun;
+        bIsSlotFree = true;
+        break;
+    }
+    if (!bIsSlotFree) plr->AllGuns[plr->EquippedGun] = gun;
+}
+
+void FireGun(Player *plr)
+{
+    Gun* curGun = plr->AllGuns[plr->EquippedGun];
+    if (curGun == 0) return;
+
+    
 }

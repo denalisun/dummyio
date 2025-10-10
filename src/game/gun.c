@@ -12,4 +12,3 @@ Gun* ConstructGun(const char* name, float damage, int ammo, int maxAmmo, int res
     gun->maxReserve = maxReserve;
     return gun;
 }
-

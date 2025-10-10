@@ -11,6 +11,10 @@ GameWorld* ConstructWorld(int WorldMap[18][32])
     p->CurrentWave = 0;
     p->AllZombies = calloc(ZOMBIE_COUNT, sizeof(Zombie*));
     p->LocalPlayer = 0;
+    p->ZombiesSpawned = 0;
+    p->ZombiesToSpawn = 0;
+    p->WaveTimer = -1;
+    p->CurrentWaveState = WAVE_ACTIVE;
     memcpy(p->WorldMap, WorldMap, sizeof(int[18][32]));
     return p;
 }
@@ -45,7 +49,46 @@ void WorldRenderMap(GameWorld* world)
     }
 }
 
-// void WorldSetWave(GameWorld* world);
+void WorldStartWave(GameWorld* world)
+{
+    world->CurrentWave++;
+    world->CurrentWaveState = WAVE_ACTIVE;
+
+    world->ZombiesSpawned = 0;
+    world->ZombiesToSpawn = (4 + world->CurrentWave) > ZOMBIE_COUNT ? ZOMBIE_COUNT : (4 + world->CurrentWave);
+
+    int zmToSpawnFor = world->ZombiesToSpawn;
+    for (int i = 0; i < zmToSpawnFor; i++)
+    {
+        WorldAddZombie(world, 100, 100);
+        world->ZombiesSpawned++;
+        world->ZombiesToSpawn--;
+    }
+}
+
+void WorldEndWave(GameWorld* world)
+{
+    world->CurrentWaveState = WAVE_CHANGING;
+    world->WaveTimer = 5.0f;
+}
+
+void WorldWaveLogic(GameWorld* world)
+{
+    switch (world->CurrentWaveState)
+    {
+    case WAVE_ACTIVE:
+        if (GetAliveZombies(world) == 0) WorldEndWave(world);
+        break;
+
+    case WAVE_CHANGING:
+        world->WaveTimer -= GetFrameTime();
+        if (world->WaveTimer <= 0.0f) WorldStartWave(world);
+        break;
+    
+    default:
+        break;
+    }
+}
 
 int GetAliveZombies(GameWorld* world)
 {
