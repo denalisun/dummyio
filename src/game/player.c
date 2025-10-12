@@ -127,7 +127,6 @@ void GiveGun(Player *plr, Gun *gun)
 void FireGun(Player *plr)
 {
     Gun* curGun = plr->AllGuns[plr->EquippedGun];
-    if (curGun == 0) return;
-
-    
+    if (curGun = 0) return;
+    //TODO: Actually fire the weapon
 }
