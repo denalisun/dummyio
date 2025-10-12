@@ -4,7 +4,10 @@
 #include "game/world.h"
 #include "game/ui.h"
 #include "game/gun.h"
+#include "game/projectile.h"
+#include "structs/array.h"
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <limits.h>
 
@@ -45,6 +48,9 @@ int main()
 
     Gun* testGun = ConstructGun("TestGun", 10, 10, 10, INT_MAX, INT_MAX);
     GiveGun(localPlayer, testGun);
+    
+    Array projArray;
+    ConstructArray(&projArray, 1);
 
     while (!WindowShouldClose()) {
         // Getting screen size
@@ -52,14 +58,34 @@ int main()
         screenHeight = GetScreenHeight();
 
         // Updating objects
-        for (int i = 0; i < ZOMBIE_COUNT; i++) {
+        for (int i = 0; i < ZOMBIE_COUNT; i++)
+        {
             Zombie* zm = world->AllZombies[i];
-            if (zm != 0) UpdateZombie(zm, localPlayer);
+            if (zm != 0)
+            {
+                UpdateZombie(zm, localPlayer);
+                if (zm->health <= 0) world->AllZombies[i] = 0;
+            }
         }
 
         UpdatePlayer(localPlayer);
         camera.target = (Vector2){ localPlayer->x, localPlayer->y };
         camera.offset = (Vector2){ screenWidth/2.0f, screenHeight/2.0f };
+
+        if (IsKeyPressed(KEY_SPACE)) 
+        {
+            Projectile* proj = ConstructProjectile(world, testGun, localPlayer, localPlayer->rotation);
+            ArrayInsert(&projArray, (uintptr_t)proj);
+        }
+
+        for (int i = 0; i < projArray.used; i++)
+        {
+            if (projArray.array[i] == 0) continue;
+            Projectile* element = (Projectile*)projArray.array[i];
+            UpdateProjectile(element);
+
+            if (element->lifeTime > PROJECTILE_LIFETIME) ArrayRemove(&projArray, i);
+        }
 
         if (IsKeyPressed(KEY_F))
         {
@@ -83,6 +109,14 @@ int main()
         DrawPlayer(localPlayer);
         for (int i = 0; i < ZOMBIE_COUNT; i++) {
             if (world->AllZombies[i] != 0) DrawZombie(world->AllZombies[i]);
+        }
+
+        // Testing
+        for (int i = 0; i < projArray.used; i++)
+        {
+            if (projArray.array[i] == 0) continue;
+            uintptr_t element = projArray.array[i];
+            RenderProjectile((Projectile*)element);
         }
 
         EndMode2D();

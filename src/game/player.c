@@ -1,5 +1,6 @@
 #include "player.h"
 #include "world.h"
+#include "raymath.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -127,6 +128,9 @@ void GiveGun(Player *plr, Gun *gun)
 void FireGun(Player *plr)
 {
     Gun* curGun = plr->AllGuns[plr->EquippedGun];
-    if (curGun = 0) return;
-    //TODO: Actually fire the weapon
+    if (curGun == 0) return;
+    if (curGun->ammo > 0)
+    {
+        curGun->ammo--;    
+    }
 }
