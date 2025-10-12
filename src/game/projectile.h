@@ -4,13 +4,13 @@
 #define PROJECTILE_LIFETIME 1.0f
 
 #include "gun.h"
-#include "world.h"
 
 struct Player;
+struct GameWorld;
 
 typedef struct Projectile
 {
-    GameWorld* world;
+    struct GameWorld* world;
     Gun* gunRef;
     struct Player* plrRef;
     float rotation;
@@ -19,7 +19,7 @@ typedef struct Projectile
     float lifeTime;
 } Projectile;
 
-Projectile* ConstructProjectile(GameWorld* world, Gun* gun, struct Player* plr, float rotation);
+Projectile* ConstructProjectile(Gun* gun, struct Player* plr, float rotation);
 void UpdateProjectile(Projectile *proj);
 void RenderProjectile(Projectile *proj);
 

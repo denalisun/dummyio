@@ -10,6 +10,7 @@ GameWorld* ConstructWorld(int WorldMap[18][32])
     GameWorld* p = malloc(sizeof(GameWorld));
     p->CurrentWave = 0;
     p->AllZombies = calloc(ZOMBIE_COUNT, sizeof(Zombie*));
+    ConstructArray(&p->AllProjectiles, 1);
     p->LocalPlayer = 0;
     p->ZombiesSpawned = 0;
     p->ZombiesToSpawn = 0;
@@ -47,6 +48,34 @@ void WorldRenderMap(GameWorld* world)
         for (int j = 0; j < (sizeof(world->WorldMap[i]) / sizeof(world->WorldMap[i][0])); j++) {
             if (world->WorldMap[i][j] == 1) DrawRectangle(j * 40, i * 40, 40, 40, GRAY);
         }
+    }
+}
+
+void WorldSpawnProjectile(GameWorld* world, Gun* gun, struct Player* plr, float rotation)
+{
+    Projectile* proj = ConstructProjectile(gun, plr, rotation);
+    ArrayInsert(&world->AllProjectiles, (uintptr_t)proj);
+}
+
+void WorldUpdateProjectiles(GameWorld* world)
+{
+    for (size_t i = 0; i < world->AllProjectiles.used; i++)
+    {
+        Projectile* proj = (Projectile*)world->AllProjectiles.array[i];
+        if (proj == 0) continue;
+        UpdateProjectile(proj);
+
+        if (proj->lifeTime > PROJECTILE_LIFETIME) ArrayRemove(&world->AllProjectiles, i);
+    }
+}
+
+void WorldRenderProjectiles(GameWorld* world)
+{
+    for (size_t i = 0; i < world->AllProjectiles.used; i++)
+    {
+        Projectile* proj = (Projectile*)world->AllProjectiles.array[i];
+        if (proj == 0) continue;
+        RenderProjectile(proj);
     }
 }
 

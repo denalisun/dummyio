@@ -1,14 +1,15 @@
 #include "projectile.h"
 #include "player.h"
 #include "raylib.h"
+#include "world.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 
-Projectile* ConstructProjectile(GameWorld* world, Gun* gun, Player* plr, float rotation)
+Projectile* ConstructProjectile(Gun* gun, Player* plr, float rotation)
 {
     Projectile* p = malloc(sizeof(Projectile));
-    p->world = world;
+    p->world = plr->world;
     p->gunRef = gun;
     p->plrRef = plr;
     p->rotation = rotation;

@@ -46,11 +46,8 @@ int main()
     Player* localPlayer = ConstructPlayer(200, 100, 100, 100, world, &camera);
     WorldSetPlayer(world, localPlayer);
 
-    Gun* testGun = ConstructGun("TestGun", 10, 10, 10, INT_MAX, INT_MAX);
+    Gun* testGun = ConstructGun("TestGun", 0.3, 10, 10, 10, INT_MAX, INT_MAX, FIREMODE_AUTO);
     GiveGun(localPlayer, testGun);
-    
-    Array projArray;
-    ConstructArray(&projArray, 1);
 
     while (!WindowShouldClose()) {
         // Getting screen size
@@ -72,20 +69,7 @@ int main()
         camera.target = (Vector2){ localPlayer->x, localPlayer->y };
         camera.offset = (Vector2){ screenWidth/2.0f, screenHeight/2.0f };
 
-        if (IsKeyPressed(KEY_SPACE)) 
-        {
-            Projectile* proj = ConstructProjectile(world, testGun, localPlayer, localPlayer->rotation);
-            ArrayInsert(&projArray, (uintptr_t)proj);
-        }
-
-        for (int i = 0; i < projArray.used; i++)
-        {
-            if (projArray.array[i] == 0) continue;
-            Projectile* element = (Projectile*)projArray.array[i];
-            UpdateProjectile(element);
-
-            if (element->lifeTime > PROJECTILE_LIFETIME) ArrayRemove(&projArray, i);
-        }
+        WorldUpdateProjectiles(world);
 
         if (IsKeyPressed(KEY_F))
         {
@@ -111,13 +95,7 @@ int main()
             if (world->AllZombies[i] != 0) DrawZombie(world->AllZombies[i]);
         }
 
-        // Testing
-        for (int i = 0; i < projArray.used; i++)
-        {
-            if (projArray.array[i] == 0) continue;
-            uintptr_t element = projArray.array[i];
-            RenderProjectile((Projectile*)element);
-        }
+        WorldRenderProjectiles(world);
 
         EndMode2D();
         DrawUI(world);

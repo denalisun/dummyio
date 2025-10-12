@@ -1,6 +1,7 @@
 #include "player.h"
 #include "world.h"
 #include "raymath.h"
+#include "projectile.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -20,11 +21,14 @@ Player* ConstructPlayer(float x, float y, float health, float maxHealth, GameWor
     plr->EquippedGun = 0;
     plr->bIsADS = false;
     plr->camera = camera;
+    plr->fireTime = 0.0f;
     return plr;
 }
 
 void UpdatePlayer(Player *plr)
 {
+    Gun* currentGun = plr->AllGuns[plr->EquippedGun];
+
     if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
     {
         if (plr->camera->zoom < 1.2f)
@@ -95,6 +99,29 @@ void UpdatePlayer(Player *plr)
     if (!is_blocked(plr->world, plr->x, y)) plr->y = y;
 
     if (plr->health < 0) plr->health = 0;
+
+    if (plr->fireTime > 0.0f) plr->fireTime -= GetFrameTime();
+    if (plr->fireTime < 0.0f) plr->fireTime = 0.0f;
+
+    switch (currentGun->fireMode)
+    {
+    case FIREMODE_AUTO:
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && plr->fireTime == 0.0f)
+        {
+            WorldSpawnProjectile(plr->world, currentGun, plr, plr->rotation);
+            plr->fireTime = currentGun->fireRate;
+        }
+        break;
+    case FIREMODE_SEMIAUTO:
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && plr->fireTime == 0.0f)
+        {
+            WorldSpawnProjectile(plr->world, currentGun, plr, plr->rotation);
+            plr->fireTime = currentGun->fireRate;
+        }
+        break;
+    default:
+        break;
+    }
 }
 
 void DrawPlayer(Player *plr)
