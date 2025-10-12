@@ -6,6 +6,7 @@
 #include "game/gun.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <limits.h>
 
 int main()
 {
@@ -67,11 +68,6 @@ int main()
                 if (world->AllZombies[i] == 0) continue;
                 world->AllZombies[i] = 0;
             }
-        }
-
-        if (IsKeyPressed(KEY_C))
-        {
-            localPlayer->health -= 5.0f;
         }
 
         // Wave logic
