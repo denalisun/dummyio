@@ -25,7 +25,7 @@ void UpdateZombie(Zombie *zm, Player *plr)
 
     for (int i = 0; i < ZOMBIE_COUNT; i++)
     {
-        if (zm->world->AllZombies[i] == 0 || zm->world->AllZombies[i] == zm)
+        if (zm->world->AllZombies[i] == NULL || zm->world->AllZombies[i] == zm)
             continue;
         Zombie* them = zm->world->AllZombies[i];
         

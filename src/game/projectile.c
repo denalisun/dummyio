@@ -21,8 +21,8 @@ Projectile* ConstructProjectile(Gun* gun, Player* plr, float rotation)
 
 void UpdateProjectile(Projectile *proj)
 {
-    proj->x += cos(proj->rotation) / 7;
-    proj->y += sin(proj->rotation) / 7;
+    proj->x += (cos(proj->rotation)) * (2500.f * GetFrameTime());
+    proj->y += (sin(proj->rotation)) * (2500.f * GetFrameTime());
 
     Rectangle thisRect = { 0 };
     thisRect.x = proj->x;
@@ -39,9 +39,9 @@ void UpdateProjectile(Projectile *proj)
         zmRect.y = zm->y;
         zmRect.width = 40;
         zmRect.height = 40;
-
         if (CheckCollisionRecs(thisRect, zmRect))
         {
+            printf("before hp: %f\n", zm->health);
             zm->health -= 10.0f;
             printf("hp: %f\n", zm->health);
             proj->lifeTime = PROJECTILE_LIFETIME;

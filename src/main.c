@@ -46,7 +46,7 @@ int main()
     Player* localPlayer = ConstructPlayer(200, 100, 100, 100, world, &camera);
     WorldSetPlayer(world, localPlayer);
 
-    Gun* testGun = ConstructGun("TestGun", 0.05, 10, 10, 10, INT_MAX, INT_MAX, FIREMODE_AUTO);
+    Gun* testGun = ConstructGun("TestGun", 0, 10, 10, 10, INT_MAX, INT_MAX, FIREMODE_SEMIAUTO);
     GiveGun(localPlayer, testGun);
 
     while (!WindowShouldClose()) {
@@ -57,11 +57,11 @@ int main()
         // Updating objects
         for (int i = 0; i < ZOMBIE_COUNT; i++)
         {
-            Zombie* zm = world->AllZombies[i];
-            if (zm != 0)
+            if (world->AllZombies[i] != 0)
             {
+                Zombie* zm = world->AllZombies[i];
                 UpdateZombie(zm, localPlayer);
-                if (zm->health <= 0) world->AllZombies[i] = 0;
+                if (zm->health <= 0) world->AllZombies[i] = NULL;
             }
         }
 

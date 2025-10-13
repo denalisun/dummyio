@@ -9,7 +9,7 @@ GameWorld* ConstructWorld(int WorldMap[18][32])
 {
     GameWorld* p = malloc(sizeof(GameWorld));
     p->CurrentWave = 0;
-    p->AllZombies = calloc(ZOMBIE_COUNT, sizeof(Zombie*));
+    p->AllZombies = calloc(ZOMBIE_COUNT, sizeof(Zombie *));
     ConstructArray(&p->AllProjectiles, 1);
     p->LocalPlayer = 0;
     p->ZombiesSpawned = 0;
@@ -29,12 +29,12 @@ void WorldAddZombie(GameWorld* world, float x, float y)
 {
     for (int i = 0; i < ZOMBIE_COUNT; i++) {
         if (world->AllZombies[i] == 0) {
-            float health = 100.0f;
+            float health = 100.0f * (float)world->CurrentWave;
             world->AllZombies[i] = ConstructZombie(
                 x, 
                 y,
-                health,
-                health,
+                100.0f,
+                100.0f,
                 world
             );
             break;
@@ -100,6 +100,14 @@ void WorldEndWave(GameWorld* world)
 {
     world->CurrentWaveState = WAVE_CHANGING;
     world->WaveTimer = 5.0f;
+
+    // Reset all zombies
+    for (int i = 0; i < ZOMBIE_COUNT; i++)
+    {
+        world->AllZombies[i] = NULL;
+    }
+
+    printf("Wave ended!\n");
 }
 
 void WorldWaveLogic(GameWorld* world)

@@ -1,7 +1,7 @@
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
-#define PROJECTILE_LIFETIME 1.0f
+#define PROJECTILE_LIFETIME 50.0f
 
 #include "gun.h"
 
