@@ -46,7 +46,7 @@ int main()
     Player* localPlayer = ConstructPlayer(200, 100, 100, 100, world, &camera);
     WorldSetPlayer(world, localPlayer);
 
-    Gun* testGun = ConstructGun("TestGun", 0.3, 10, 10, 10, INT_MAX, INT_MAX, FIREMODE_AUTO);
+    Gun* testGun = ConstructGun("TestGun", 0.05, 10, 10, 10, INT_MAX, INT_MAX, FIREMODE_AUTO);
     GiveGun(localPlayer, testGun);
 
     while (!WindowShouldClose()) {
@@ -66,8 +66,6 @@ int main()
         }
 
         UpdatePlayer(localPlayer);
-        camera.target = (Vector2){ localPlayer->x, localPlayer->y };
-        camera.offset = (Vector2){ screenWidth/2.0f, screenHeight/2.0f };
 
         WorldUpdateProjectiles(world);
 
@@ -102,6 +100,7 @@ int main()
         EndDrawing();
     }
 
+    ArrayFree(&world->AllProjectiles);
     free(world->AllZombies);
     free(localPlayer);
 

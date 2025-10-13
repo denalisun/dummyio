@@ -29,19 +29,6 @@ void UpdatePlayer(Player *plr)
 {
     Gun* currentGun = plr->AllGuns[plr->EquippedGun];
 
-    if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
-    {
-        if (plr->camera->zoom < 1.2f)
-        {
-            plr->camera->zoom += 1 * GetFrameTime();
-        }
-    }
-    else
-    {
-        if (plr->camera->zoom > 1.0f) plr->camera->zoom -= 1 * GetFrameTime();
-        if (plr->camera->zoom < 1.0f) plr->camera->zoom += 1 * GetFrameTime();
-    }
-
     float x = ((int)IsKeyDown(KEY_D) - (int)IsKeyDown(KEY_A)) * ((float)250 * GetFrameTime());
     float y = ((int)IsKeyDown(KEY_S) - (int)IsKeyDown(KEY_W)) * ((float)250 * GetFrameTime());
     
@@ -97,6 +84,24 @@ void UpdatePlayer(Player *plr)
 
     if (!is_blocked(plr->world, x, plr->y)) plr->x = x;
     if (!is_blocked(plr->world, plr->x, y)) plr->y = y;
+
+    float screenWidth = GetScreenWidth();
+    float screenHeight = GetScreenHeight();
+    plr->camera->target = (Vector2){plr->x, plr->y};
+    if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
+    {
+        plr->camera->offset = (Vector2){ screenWidth/2.0f + (25 * -cos(plr->rotation)), screenHeight/2.0f + (25 * -sin(plr->rotation)) };
+        if (plr->camera->zoom < 1.2f)
+        {
+            plr->camera->zoom += 1 * GetFrameTime();
+        }
+    }
+    else
+    {
+        plr->camera->offset = (Vector2){ screenWidth/2.0f, screenHeight/2.0f };
+        if (plr->camera->zoom > 1.0f) plr->camera->zoom -= 1 * GetFrameTime();
+        if (plr->camera->zoom < 1.0f) plr->camera->zoom += 1 * GetFrameTime();
+    }
 
     if (plr->health < 0) plr->health = 0;
 
