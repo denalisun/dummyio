@@ -15,7 +15,6 @@ int main()
 {
     InitWindow(1280, 720, "DUMMY");
     SetWindowState(FLAG_WINDOW_RESIZABLE);
-    int screenWidth, screenHeight = GetScreenWidth(), GetScreenHeight();
     
     int baseWorldMap[18][32] = {
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -50,11 +49,7 @@ int main()
     GiveGun(localPlayer, testGun);
 
     while (!WindowShouldClose()) {
-        // Getting screen size
-        screenWidth = GetScreenWidth();
-        screenHeight = GetScreenHeight();
-
-        // Updating objects
+        // Updating stuff
         for (int i = 0; i < ZOMBIE_COUNT; i++)
         {
             if (world->AllZombies[i] != 0)

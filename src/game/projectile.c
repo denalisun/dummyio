@@ -19,6 +19,7 @@ Projectile* ConstructProjectile(Gun* gun, Player* plr, float rotation)
     return p;
 }
 
+// I gotta fix whatever is wrong with the multiple bullet damage bug
 void UpdateProjectile(Projectile *proj)
 {
     proj->x += (cos(proj->rotation)) * (2500.f * GetFrameTime());
@@ -30,18 +31,17 @@ void UpdateProjectile(Projectile *proj)
     thisRect.width = 10;
     thisRect.height = 10;
 
-    for (int i = 0; i < sizeof(proj->world->AllZombies); i++)
+    for (int i = 0; i < ZOMBIE_COUNT; i++)
     {
-        if (proj->world->AllZombies[i] == 0) continue;
+        if (proj->world->AllZombies[i] == NULL) continue;
         Zombie* zm = proj->world->AllZombies[i];
         Rectangle zmRect = { 0 };
         zmRect.x = zm->x;
         zmRect.y = zm->y;
         zmRect.width = 40;
         zmRect.height = 40;
-        if (CheckCollisionRecs(thisRect, zmRect))
+        if (CheckCollisionRecs(zmRect, thisRect))
         {
-            printf("before hp: %f\n", zm->health);
             zm->health -= 10.0f;
             printf("hp: %f\n", zm->health);
             proj->lifeTime = PROJECTILE_LIFETIME;
