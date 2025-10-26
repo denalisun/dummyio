@@ -2,7 +2,7 @@
 #define PROJECTILE_H
 
 // #define PROJECTILE_LIFETIME 1.0f
-#define PROJECTILE_LIFETIME 50.0f
+#define PROJECTILE_LIFETIME 5.0f
 
 #include "gun.h"
 #include "raylib.h"
