@@ -45,7 +45,9 @@ int main()
     WorldSetPlayer(world, localPlayer);
 
     Gun* testGun = ConstructGun("TestGun", 0, 10, 10, 10, INT_MAX, INT_MAX, FIREMODE_SEMIAUTO);
+    Gun* testAutoGun = ConstructGun("TestAutomatic", 0.025, 25, 30, 30, 180, 180, FIREMODE_AUTO);
     GiveGun(localPlayer, testGun);
+    GiveGun(localPlayer, testAutoGun);
 
     while (!WindowShouldClose()) {
         // Updating stuff

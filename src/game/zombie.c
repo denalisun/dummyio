@@ -21,8 +21,8 @@ Zombie* ConstructZombie(float x, float y, float health, float maxHealth, GameWor
 void UpdateZombie(Zombie *zm, Player *plr)
 {
     zm->rotation = atan2(zm->y - plr->y, zm->x - plr->x);
-    float x = zm->x - cos(zm->rotation) * ((float)100 * GetFrameTime());
-    float y = zm->y - sin(zm->rotation) * ((float)100 * GetFrameTime());
+    float x = zm->x - cos(zm->rotation) * (100.0f * GetFrameTime());
+    float y = zm->y - sin(zm->rotation) * (100.0f * GetFrameTime());
 
     for (int i = 0; i < ZOMBIE_COUNT; i++)
     {
@@ -46,8 +46,15 @@ void UpdateZombie(Zombie *zm, Player *plr)
 
     // zm->x = x;
     // zm->y = y;
-    if (!is_blocked(zm->world, x, zm->y)) zm->x = x;
-    if (!is_blocked(zm->world, zm->x, y)) zm->y = y;
+    if (!is_blocked(zm->world, x, zm->y))
+    {
+        zm->x = x;
+    }
+    
+    if (!is_blocked(zm->world, zm->x, y))
+    {
+        zm->y = y;
+    }
 }
 
 void DrawZombie(Zombie *zm)
@@ -57,5 +64,13 @@ void DrawZombie(Zombie *zm)
         (Vector2){20, 20},
         zm->rotation * RAD2DEG,
         GREEN);
-    DrawRectangleLines(zm->hitBox.x, zm->hitBox.y, zm->hitBox.width, zm->hitBox.height, RED);
+
+    if (zm->health < zm->maxHealth)
+    {
+        DrawRectangle(zm->x - 25, zm->y - 40, 50, 10, BLACK);
+        DrawRectangle(zm->x - 25, zm->y - 40, (int)(50 * (zm->health / zm->maxHealth)), 10, GREEN);
+        DrawRectangleLines(zm->x - 25, zm->y - 40, 50, 10, WHITE);
+    }
+
+    //DrawRectangleLines(zm->hitBox.x, zm->hitBox.y, zm->hitBox.width, zm->hitBox.height, RED);
 }

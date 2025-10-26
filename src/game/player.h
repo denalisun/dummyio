@@ -19,6 +19,7 @@ typedef struct Player {
     int money;
     struct GameWorld* world;
     Camera2D* camera;
+    float baseZoom;
     Gun** AllGuns;
     int EquippedGun;
     bool bIsADS;

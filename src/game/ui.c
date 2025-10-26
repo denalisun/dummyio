@@ -1,6 +1,9 @@
 #include "ui.h"
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
+
+#define DRAW_FPS
 
 void DrawUI(GameWorld* world)
 {
@@ -38,7 +41,7 @@ void DrawUI(GameWorld* world)
 
     // Draw gun
     Gun* gun = world->LocalPlayer->AllGuns[world->LocalPlayer->EquippedGun];
-    DrawText(gun->name, screenWidth - (sizeof(gun->name) * 24), screenHeight - 24, 24, WHITE);
+    DrawText(gun->name, screenWidth - MeasureText(gun->name, 24), screenHeight - 24, 24, WHITE);
 
     // Draw redscreen
     Color redscreenColor = { 0 };
@@ -47,4 +50,11 @@ void DrawUI(GameWorld* world)
     redscreenColor.b = 0.0f;
     redscreenColor.a = 255.0f - ((world->LocalPlayer->health / world->LocalPlayer->maxHealth) * 255);
     DrawRectangle(0, 0, screenWidth, screenHeight, redscreenColor);
+
+    // Draw FPS
+#ifdef DRAW_FPS
+    char fpsStr[16];
+    sprintf(fpsStr, "%d FPS", GetFPS());
+    DrawText(fpsStr, screenWidth - (strlen(fpsStr) * 24), 24, 24, GREEN);
+#endif
 }

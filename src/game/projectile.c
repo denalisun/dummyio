@@ -50,5 +50,5 @@ void UpdateProjectile(Projectile *proj)
 void RenderProjectile(Projectile *proj)
 {
     DrawRectangle(proj->x, proj->y, 10, 10, YELLOW);
-    DrawRectangleLines(proj->x, proj->y, 15, 15, RED);
+    //DrawRectangleLines(proj->x, proj->y, 15, 15, RED);
 }

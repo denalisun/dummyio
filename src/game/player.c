@@ -1,10 +1,9 @@
 #include "player.h"
 #include "world.h"
-#include "raymath.h"
 #include "projectile.h"
 #include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
 
 #define USE_MOUSE_CONTROLS
 
@@ -24,6 +23,7 @@ Player* ConstructPlayer(float x, float y, float health, float maxHealth, GameWor
     plr->EquippedGun = 0;
     plr->bIsADS = false;
     plr->camera = camera;
+    plr->baseZoom = 1.0f;
     plr->fireTime = 0.0f;
     return plr;
 }
@@ -41,6 +41,13 @@ void UpdatePlayer(Player *plr)
 #else
     plr->rotation += ((int)IsKeyDown(KEY_RIGHT) - (int)IsKeyDown(KEY_LEFT)) * ((float)15 * GetFrameTime());
 #endif
+
+    // printf("%d\n", (int)GetMouseWheelMove());
+    if (IsKeyPressed(KEY_ONE))
+    {
+        SwapGun(plr);
+        printf("%d\n", plr->EquippedGun);
+    }
 
     // Normalizing (making sure it isnt faster diagonally)
     float length = sqrtf(x*x + y*y);
@@ -75,6 +82,7 @@ void UpdatePlayer(Player *plr)
                 y += (dy / dist) * 1.0f;
 
                 plr->health -= 300 * GetFrameTime();
+                plr->timeSinceHit = 5.0f;
             }
         }
     }
@@ -85,24 +93,31 @@ void UpdatePlayer(Player *plr)
     float screenWidth = GetScreenWidth();
     float screenHeight = GetScreenHeight();
     plr->camera->target = (Vector2){plr->x, plr->y};
+
 #ifdef USE_MOUSE_CONTROLS
-    if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
+    plr->bIsADS = IsMouseButtonDown(MOUSE_BUTTON_RIGHT);
 #else
-    if (IsKeyDown(KEY_X))
+    if (IsKeyPressed(KEY_X))
+    {
+        plr->bIsADS = !plr->bIsADS;
+    }
 #endif
+
+    if (plr->bIsADS)
     {
         plr->camera->offset = (Vector2){ screenWidth/2.0f + (25 * -cos(plr->rotation)), screenHeight/2.0f + (25 * -sin(plr->rotation)) };
-        if (plr->camera->zoom < 1.2f)
+        if (plr->baseZoom < 1.2f)
         {
-            plr->camera->zoom += 1 * GetFrameTime();
+            plr->baseZoom += 1 * GetFrameTime();
         }
     }
     else
     {
         plr->camera->offset = (Vector2){ screenWidth/2.0f, screenHeight/2.0f };
-        if (plr->camera->zoom > 1.0f) plr->camera->zoom -= 1 * GetFrameTime();
-        if (plr->camera->zoom < 1.0f) plr->camera->zoom += 1 * GetFrameTime();
+        if (plr->baseZoom > 1.0f) plr->baseZoom -= 1 * GetFrameTime();
+        if (plr->baseZoom < 1.0f) plr->baseZoom += 1 * GetFrameTime();
     }
+    plr->camera->zoom = plr->baseZoom * ((screenHeight / 450.0f));
 
     if (plr->health < 0) plr->health = 0;
 
@@ -128,6 +143,12 @@ void UpdatePlayer(Player *plr)
     default:
         break;
     }
+
+    plr->timeSinceHit -= GetFrameTime();
+    if (plr->timeSinceHit <= 0.0f && plr->health < plr->maxHealth) {
+        plr->health += 300.0f * GetFrameTime();
+        if (plr->health >= plr->maxHealth) plr->health = plr->maxHealth;
+    }
 }
 
 void DrawPlayer(Player *plr)
@@ -137,13 +158,21 @@ void DrawPlayer(Player *plr)
         (Vector2){20, 20},
         plr->rotation * RAD2DEG,
         (Color){0xff, 0xb3, 0x19, 0xff});
-    DrawRectangleLines(plr->hitBox.x, plr->hitBox.y, plr->hitBox.width, plr->hitBox.height, RED);
+    //DrawRectangleLines(plr->hitBox.x, plr->hitBox.y, plr->hitBox.width, plr->hitBox.height, RED);
 }
 
 void SwapGun(Player *plr)
 {
     plr->EquippedGun++;
-    if (plr->EquippedGun > (GUN_SIZE+1)) plr->EquippedGun = 0;
+    if (plr->EquippedGun > (GUN_SIZE+1))
+    {
+        plr->EquippedGun = 0;
+    }
+
+    if (plr->AllGuns[plr->EquippedGun] == 0)
+    {
+        plr->EquippedGun = 0;
+    }
 }
 
 void GiveGun(Player *plr, Gun *gun)
@@ -151,7 +180,7 @@ void GiveGun(Player *plr, Gun *gun)
     bool bIsSlotFree = false;
     for (int i = 0; i < GUN_SIZE; i++)
     {
-        if (plr->AllGuns[i] == 0) continue;
+        if (plr->AllGuns[i] != 0) continue;
         plr->AllGuns[i] = gun;
         bIsSlotFree = true;
         break;

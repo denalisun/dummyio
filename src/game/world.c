@@ -28,12 +28,12 @@ void WorldAddZombie(GameWorld* world, float x, float y)
 {
     for (int i = 0; i < ZOMBIE_COUNT; i++) {
         if (world->AllZombies[i] == 0) {
-            // float health = 100.0f * (float)world->CurrentWave;
+            float health = 100.0f + (25.0f * (float)(world->CurrentWave - 1));
             world->AllZombies[i] = ConstructZombie(
                 x,
                 y,
-                100.0f,
-                100.0f,
+                health,
+                health,
                 world
             );
             break;
