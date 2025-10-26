@@ -22,7 +22,7 @@ void ArrayRemove(Array *a, int i)
     if (i < 0 || (size_t)i >= a->used)
         return;
     
-    for (size_t j = 0; j < a->used - 1; j++)
+    for (size_t j = i; j < a->used - 1; j++)
     {
         a->array[j] = a->array[j + 1];
     }
@@ -35,4 +35,13 @@ void ArrayFree(Array *a)
     free(a->array);
     a->array = NULL;
     a->used = a->size = 0;
+}
+
+uintptr_t ArrayGet(Array *a, int i)
+{
+    if (i >= a->used)
+    {
+        return 0;
+    }
+    return a->array[i];
 }

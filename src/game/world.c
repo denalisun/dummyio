@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "raylib.h"
-#include <math.h>
 
 GameWorld* ConstructWorld(int WorldMap[18][32])
 {
@@ -61,11 +60,15 @@ void WorldUpdateProjectiles(GameWorld* world)
 {
     for (size_t i = 0; i < world->AllProjectiles.used; i++)
     {
-        Projectile* proj = (Projectile*)world->AllProjectiles.array[i];
+        Projectile* proj = (Projectile*)ArrayGet(&world->AllProjectiles, i);
         if (proj == NULL) continue;
         UpdateProjectile(proj);
-
-        if (proj->lifeTime >= PROJECTILE_LIFETIME) ArrayRemove(&world->AllProjectiles, i);
+        
+        if (proj->lifeTime >= PROJECTILE_LIFETIME)
+        {
+            ArrayRemove(&world->AllProjectiles, (int)i);
+            i--;
+        }
     }
 }
 

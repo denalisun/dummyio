@@ -14,6 +14,7 @@ Zombie* ConstructZombie(float x, float y, float health, float maxHealth, GameWor
     zm->health = health;
     zm->maxHealth = maxHealth;
     zm->world = world;
+    zm->hitBox = (Rectangle){zm->x, zm->y, 50, 50};
     return zm;
 }
 
@@ -28,20 +29,8 @@ void UpdateZombie(Zombie *zm, Player *plr)
         if (zm->world->AllZombies[i] == NULL || zm->world->AllZombies[i] == zm)
             continue;
         Zombie* them = zm->world->AllZombies[i];
-        
-        Rectangle ourRec = { 0 };
-        ourRec.x = x;
-        ourRec.y = y;
-        ourRec.width = 40;
-        ourRec.height = 40;
 
-        Rectangle theirRec = { 0 };
-        theirRec.x = them->x;
-        theirRec.y = them->y;
-        theirRec.width = 40;
-        theirRec.height = 40;
-
-        if (CheckCollisionRecs(ourRec, theirRec)) {
+        if (CheckCollisionRecs(zm->hitBox, them->hitBox)) {
             float dx = x - them->x;
             float dy = y - them->y;
             float dist = sqrt(dx*dx + dy*dy);
@@ -51,6 +40,9 @@ void UpdateZombie(Zombie *zm, Player *plr)
             }
         }
     }
+
+    zm->hitBox.x = zm->x - 25;
+    zm->hitBox.y = zm->y - 25;
 
     // zm->x = x;
     // zm->y = y;
@@ -65,4 +57,5 @@ void DrawZombie(Zombie *zm)
         (Vector2){20, 20},
         zm->rotation * RAD2DEG,
         GREEN);
+    DrawRectangleLines(zm->hitBox.x, zm->hitBox.y, zm->hitBox.width, zm->hitBox.height, RED);
 }

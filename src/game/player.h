@@ -12,6 +12,7 @@ typedef struct Player {
     float x;
     float y;
     float rotation;
+    Rectangle hitBox;
     float health;
     float maxHealth;
     float timeSinceHit;

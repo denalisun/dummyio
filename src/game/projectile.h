@@ -1,9 +1,11 @@
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
+// #define PROJECTILE_LIFETIME 1.0f
 #define PROJECTILE_LIFETIME 50.0f
 
 #include "gun.h"
+#include "raylib.h"
 
 struct Player;
 struct GameWorld;
@@ -14,6 +16,7 @@ typedef struct Projectile
     Gun* gunRef;
     struct Player* plrRef;
     float rotation;
+    Rectangle hitBox;
     float x;
     float y;
     float lifeTime;

@@ -11,6 +11,7 @@ typedef struct {
     float rotation;
     float health;
     float maxHealth;
+    Rectangle hitBox;
     struct GameWorld* world;
 } Zombie;
 

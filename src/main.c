@@ -4,7 +4,6 @@
 #include "game/world.h"
 #include "game/ui.h"
 #include "game/gun.h"
-#include "game/projectile.h"
 #include "structs/array.h"
 #include <stdlib.h>
 #include <stdint.h>

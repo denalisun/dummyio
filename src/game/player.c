@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#define USE_MOUSE_CONTROLS
+
 Player* ConstructPlayer(float x, float y, float health, float maxHealth, GameWorld* world, Camera2D* camera)
 {
     Player* plr = malloc(sizeof(Player));
@@ -13,6 +15,7 @@ Player* ConstructPlayer(float x, float y, float health, float maxHealth, GameWor
     plr->y = y;
     plr->rotation = 0;
     plr->health = health;
+    plr->hitBox = (Rectangle){plr->x, plr->y, 50, 50};
     plr->maxHealth = maxHealth;
     plr->timeSinceHit = 0.0f;
     plr->money = 500;
@@ -32,8 +35,12 @@ void UpdatePlayer(Player *plr)
     float x = ((int)IsKeyDown(KEY_D) - (int)IsKeyDown(KEY_A)) * ((float)250 * GetFrameTime());
     float y = ((int)IsKeyDown(KEY_S) - (int)IsKeyDown(KEY_W)) * ((float)250 * GetFrameTime());
     
+#ifdef USE_MOUSE_CONTROLS
     const Vector2 mousePos = GetMousePosition();
     plr->rotation = atan2(mousePos.y - (GetScreenHeight() / 2.0f), mousePos.x - (GetScreenWidth() / 2.0f));
+#else
+    plr->rotation += ((int)IsKeyDown(KEY_RIGHT) - (int)IsKeyDown(KEY_LEFT)) * ((float)15 * GetFrameTime());
+#endif
 
     // Normalizing (making sure it isnt faster diagonally)
     float length = sqrtf(x*x + y*y);
@@ -48,26 +55,16 @@ void UpdatePlayer(Player *plr)
         y += plr->y;
     }
 
+    plr->hitBox.x = plr->x - 25;
+    plr->hitBox.y = plr->y - 25;
+
     // Check for zombies
     for (int i = 0; i < ZOMBIE_COUNT; i++)
     {
         if (plr->world->AllZombies[i] == 0)
             continue;
         Zombie* them = plr->world->AllZombies[i];
-        
-        Rectangle ourRec = { 0 };
-        ourRec.x = x;
-        ourRec.y = y;
-        ourRec.width = 40;
-        ourRec.height = 40;
-
-        Rectangle theirRec = { 0 };
-        theirRec.x = them->x;
-        theirRec.y = them->y;
-        theirRec.width = 40;
-        theirRec.height = 40;
-
-        if (CheckCollisionRecs(ourRec, theirRec))
+        if (CheckCollisionRecs(plr->hitBox, them->hitBox))
         {
             float dx = x - them->x;
             float dy = y - them->y;
@@ -88,7 +85,11 @@ void UpdatePlayer(Player *plr)
     float screenWidth = GetScreenWidth();
     float screenHeight = GetScreenHeight();
     plr->camera->target = (Vector2){plr->x, plr->y};
+#ifdef USE_MOUSE_CONTROLS
     if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
+#else
+    if (IsKeyDown(KEY_X))
+#endif
     {
         plr->camera->offset = (Vector2){ screenWidth/2.0f + (25 * -cos(plr->rotation)), screenHeight/2.0f + (25 * -sin(plr->rotation)) };
         if (plr->camera->zoom < 1.2f)
@@ -136,6 +137,7 @@ void DrawPlayer(Player *plr)
         (Vector2){20, 20},
         plr->rotation * RAD2DEG,
         (Color){0xff, 0xb3, 0x19, 0xff});
+    DrawRectangleLines(plr->hitBox.x, plr->hitBox.y, plr->hitBox.width, plr->hitBox.height, RED);
 }
 
 void SwapGun(Player *plr)
