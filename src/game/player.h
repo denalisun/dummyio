@@ -32,5 +32,7 @@ void DrawPlayer(Player *plr);
 void SwapGun(Player *plr);
 void GiveGun(Player *plr, Gun *gun);
 void FireGun(Player *plr);
+void ReloadGun(Player *plr);
+void UpdateReload(Player *plr);
 
 #endif

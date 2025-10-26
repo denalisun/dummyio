@@ -1,8 +1,8 @@
 #include "raylib.h"
 #include "game/player.h"
 #include "game/zombie.h"
-#include "game/world.h"
 #include "game/ui.h"
+#include "game/world.h"
 #include "game/gun.h"
 #include "structs/array.h"
 #include <stdlib.h>
@@ -36,6 +36,8 @@ int main()
         {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
     };
     GameWorld* world = ConstructWorld(baseWorldMap);
+    UI* localUi = ConstructUI(world);
+    world->LocalUI = localUi;
 
     Camera2D camera = { 0 };
     camera.rotation = 0;
@@ -44,13 +46,15 @@ int main()
     Player* localPlayer = ConstructPlayer(200, 100, 100, 100, world, &camera);
     WorldSetPlayer(world, localPlayer);
 
-    Gun* testGun = ConstructGun("TestGun", 0, 10, 10, 10, INT_MAX, INT_MAX, FIREMODE_SEMIAUTO);
-    Gun* testAutoGun = ConstructGun("TestAutomatic", 0.025, 25, 30, 30, 180, 180, FIREMODE_AUTO);
+    Gun* testGun = ConstructGun("TestGun", 0.01, 10, 10, 10, INT_MAX, INT_MAX, 2.0f, FIREMODE_SEMIAUTO);
+    Gun* testAutoGun = ConstructGun("TestAutomatic", 0.025, 25, 30, 30, 180, 180, 3.0f, FIREMODE_AUTO);
     GiveGun(localPlayer, testGun);
     GiveGun(localPlayer, testAutoGun);
 
     while (!WindowShouldClose()) {
         // Updating stuff
+        UpdateUI(localUi);
+
         for (int i = 0; i < ZOMBIE_COUNT; i++)
         {
             if (world->AllZombies[i] != 0)
@@ -92,7 +96,7 @@ int main()
         WorldRenderProjectiles(world);
 
         EndMode2D();
-        DrawUI(world);
+        DrawUI(localUi);
         EndDrawing();
     }
 

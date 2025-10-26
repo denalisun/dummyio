@@ -12,9 +12,9 @@
       "dummy",
       "src/main.c"
     ],
-    "directory": "/home/denalisun/Programming/dummyio",
-    "file": "/home/denalisun/Programming/dummyio/src/main.c",
-    "output": "/home/denalisun/Programming/dummyio/dummy"
+    "directory": "/home/amelia/Programming/dummyio",
+    "file": "/home/amelia/Programming/dummyio/src/main.c",
+    "output": "/home/amelia/Programming/dummyio/dummy"
   },
   {
     "arguments": [
@@ -29,9 +29,9 @@
       "dummy",
       "src/game/player.c"
     ],
-    "directory": "/home/denalisun/Programming/dummyio",
-    "file": "/home/denalisun/Programming/dummyio/src/game/player.c",
-    "output": "/home/denalisun/Programming/dummyio/dummy"
+    "directory": "/home/amelia/Programming/dummyio",
+    "file": "/home/amelia/Programming/dummyio/src/game/player.c",
+    "output": "/home/amelia/Programming/dummyio/dummy"
   },
   {
     "arguments": [
@@ -46,9 +46,9 @@
       "dummy",
       "src/game/zombie.c"
     ],
-    "directory": "/home/denalisun/Programming/dummyio",
-    "file": "/home/denalisun/Programming/dummyio/src/game/zombie.c",
-    "output": "/home/denalisun/Programming/dummyio/dummy"
+    "directory": "/home/amelia/Programming/dummyio",
+    "file": "/home/amelia/Programming/dummyio/src/game/zombie.c",
+    "output": "/home/amelia/Programming/dummyio/dummy"
   },
   {
     "arguments": [
@@ -63,9 +63,9 @@
       "dummy",
       "src/game/world.c"
     ],
-    "directory": "/home/denalisun/Programming/dummyio",
-    "file": "/home/denalisun/Programming/dummyio/src/game/world.c",
-    "output": "/home/denalisun/Programming/dummyio/dummy"
+    "directory": "/home/amelia/Programming/dummyio",
+    "file": "/home/amelia/Programming/dummyio/src/game/world.c",
+    "output": "/home/amelia/Programming/dummyio/dummy"
   },
   {
     "arguments": [
@@ -80,9 +80,9 @@
       "dummy",
       "src/game/ui.c"
     ],
-    "directory": "/home/denalisun/Programming/dummyio",
-    "file": "/home/denalisun/Programming/dummyio/src/game/ui.c",
-    "output": "/home/denalisun/Programming/dummyio/dummy"
+    "directory": "/home/amelia/Programming/dummyio",
+    "file": "/home/amelia/Programming/dummyio/src/game/ui.c",
+    "output": "/home/amelia/Programming/dummyio/dummy"
   },
   {
     "arguments": [
@@ -97,9 +97,9 @@
       "dummy",
       "src/game/gun.c"
     ],
-    "directory": "/home/denalisun/Programming/dummyio",
-    "file": "/home/denalisun/Programming/dummyio/src/game/gun.c",
-    "output": "/home/denalisun/Programming/dummyio/dummy"
+    "directory": "/home/amelia/Programming/dummyio",
+    "file": "/home/amelia/Programming/dummyio/src/game/gun.c",
+    "output": "/home/amelia/Programming/dummyio/dummy"
   },
   {
     "arguments": [
@@ -114,9 +114,9 @@
       "dummy",
       "src/game/projectile.c"
     ],
-    "directory": "/home/denalisun/Programming/dummyio",
-    "file": "/home/denalisun/Programming/dummyio/src/game/projectile.c",
-    "output": "/home/denalisun/Programming/dummyio/dummy"
+    "directory": "/home/amelia/Programming/dummyio",
+    "file": "/home/amelia/Programming/dummyio/src/game/projectile.c",
+    "output": "/home/amelia/Programming/dummyio/dummy"
   },
   {
     "arguments": [
@@ -131,8 +131,8 @@
       "dummy",
       "src/structs/array.c"
     ],
-    "directory": "/home/denalisun/Programming/dummyio",
-    "file": "/home/denalisun/Programming/dummyio/src/structs/array.c",
-    "output": "/home/denalisun/Programming/dummyio/dummy"
+    "directory": "/home/amelia/Programming/dummyio",
+    "file": "/home/amelia/Programming/dummyio/src/structs/array.c",
+    "output": "/home/amelia/Programming/dummyio/dummy"
   }
 ]

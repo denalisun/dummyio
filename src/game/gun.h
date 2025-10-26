@@ -16,9 +16,11 @@ typedef struct Gun
     int maxAmmo;
     int reserveAmmo;
     int maxReserve;
+    float reloadTime;
+    float reloadingTimer;
     FireMode fireMode;
 } Gun;
 
-Gun* ConstructGun(const char* name, float fireRate, float damage, int ammo, int maxAmmo, int reserveAmmo, int maxReserve, FireMode fireMode);
+Gun* ConstructGun(const char* name, float fireRate, float damage, int ammo, int maxAmmo, int reserveAmmo, int maxReserve, float reloadTime, FireMode fireMode);
 
 #endif

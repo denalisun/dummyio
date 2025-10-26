@@ -30,7 +30,7 @@ Player* ConstructPlayer(float x, float y, float health, float maxHealth, GameWor
 
 void UpdatePlayer(Player *plr)
 {
-    Gun* currentGun = plr->AllGuns[plr->EquippedGun];
+    //Gun* currentGun = plr->AllGuns[plr->EquippedGun];
 
     float x = ((int)IsKeyDown(KEY_D) - (int)IsKeyDown(KEY_A)) * ((float)250 * GetFrameTime());
     float y = ((int)IsKeyDown(KEY_S) - (int)IsKeyDown(KEY_W)) * ((float)250 * GetFrameTime());
@@ -117,36 +117,27 @@ void UpdatePlayer(Player *plr)
         if (plr->baseZoom > 1.0f) plr->baseZoom -= 1 * GetFrameTime();
         if (plr->baseZoom < 1.0f) plr->baseZoom += 1 * GetFrameTime();
     }
-    plr->camera->zoom = plr->baseZoom * ((screenHeight / 450.0f));
+    plr->camera->zoom = plr->baseZoom * ((screenHeight / 450.0f)) * 0.7;
 
     if (plr->health < 0) plr->health = 0;
+
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && plr->fireTime == 0.0f)
+    {
+        FireGun(plr);
+    }
+
+    if (IsKeyPressed(KEY_R))
+    {
+        ReloadGun(plr);
+    }
+    UpdateReload(plr);
 
     if (plr->fireTime > 0.0f) plr->fireTime -= GetFrameTime();
     if (plr->fireTime < 0.0f) plr->fireTime = 0.0f;
 
-    switch (currentGun->fireMode)
-    {
-    case FIREMODE_AUTO:
-        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && plr->fireTime == 0.0f)
-        {
-            WorldSpawnProjectile(plr->world, currentGun, plr, plr->rotation);
-            plr->fireTime = currentGun->fireRate;
-        }
-        break;
-    case FIREMODE_SEMIAUTO:
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && plr->fireTime == 0.0f)
-        {
-            WorldSpawnProjectile(plr->world, currentGun, plr, plr->rotation);
-            plr->fireTime = currentGun->fireRate;
-        }
-        break;
-    default:
-        break;
-    }
-
     plr->timeSinceHit -= GetFrameTime();
     if (plr->timeSinceHit <= 0.0f && plr->health < plr->maxHealth) {
-        plr->health += 300.0f * GetFrameTime();
+        plr->health += 100.0f * GetFrameTime();
         if (plr->health >= plr->maxHealth) plr->health = plr->maxHealth;
     }
 }
@@ -190,10 +181,64 @@ void GiveGun(Player *plr, Gun *gun)
 
 void FireGun(Player *plr)
 {
-    Gun* curGun = plr->AllGuns[plr->EquippedGun];
-    if (curGun == 0) return;
-    if (curGun->ammo > 0)
+    Gun* currentGun = plr->AllGuns[plr->EquippedGun];
+    if (currentGun == 0) return;
+    if (currentGun->ammo > 0)
     {
-        curGun->ammo--;    
+        switch (currentGun->fireMode)
+        {
+        case FIREMODE_AUTO:
+            if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && plr->fireTime == 0.0f)
+            {
+                WorldSpawnProjectile(plr->world, currentGun, plr, plr->rotation);
+                plr->fireTime = currentGun->fireRate;
+                currentGun->ammo--;
+            }
+            break;
+        case FIREMODE_SEMIAUTO:
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && plr->fireTime == 0.0f)
+            {
+                WorldSpawnProjectile(plr->world, currentGun, plr, plr->rotation);
+                plr->fireTime = currentGun->fireRate;
+                currentGun->ammo--;
+            }
+            break;
+        default:
+            break;
+        }
+    }
+}
+
+void ReloadGun(Player *plr)
+{
+    Gun *currentGun = plr->AllGuns[plr->EquippedGun];
+    if (currentGun == 0) return;
+    if (currentGun->ammo < currentGun->maxAmmo && currentGun->reloadingTimer == 0.0f)
+    {
+        currentGun->reloadingTimer = currentGun->reloadTime;
+    }
+}
+
+void UpdateReload(Player *plr)
+{
+    Gun *currentGun = plr->AllGuns[plr->EquippedGun];
+    if (currentGun == 0) return;
+    if (currentGun->reloadingTimer > 0.0f)
+    {
+        currentGun->reloadingTimer -= GetFrameTime();
+        if (currentGun->reloadingTimer <= 0.0f)
+        {
+            currentGun->reloadingTimer = 0.0f;
+            if (currentGun->reserveAmmo >= currentGun->maxAmmo)
+            {
+                currentGun->ammo = currentGun->maxAmmo;
+                currentGun->reserveAmmo -= currentGun->maxAmmo;
+            }
+            else
+            {
+                currentGun->ammo = currentGun->reserveAmmo;
+                currentGun->reserveAmmo = 0;
+            }
+        }
     }
 }

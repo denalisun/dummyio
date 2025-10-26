@@ -6,6 +6,7 @@
 
 #include "player.h"
 #include "zombie.h"
+#include "ui.h"
 #include "state.h"
 #include "projectile.h"
 #include "../structs/array.h"
@@ -27,6 +28,7 @@ typedef struct GameWorld
     int CurrentWave;
     float WaveTimer;
     WaveState CurrentWaveState;
+    UI* LocalUI;
 } GameWorld;
 
 GameWorld* ConstructWorld(int WorldMap[18][32]);
