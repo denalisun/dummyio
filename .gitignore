@@ -56,3 +56,10 @@ dkms.conf
 
 # Getting rid of .vscode
 .vscode/
+
+# Project-specific files
+/dummy
+/dummy.exe
+/dummy.html
+/dummy.js
+/dummy.wasm

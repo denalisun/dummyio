@@ -1,9 +1,10 @@
 #ifndef STATE_H
 #define STATE_H
 
-enum GameState {
-    STATE_MAIN_MENU,
-    STATE_IN_GAME
-};
+typedef enum GameState {
+    STATE_MAINMENU,
+    STATE_INGAME,
+    STATE_PAUSED
+} GameState;
 
 #endif

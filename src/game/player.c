@@ -207,6 +207,10 @@ void FireGun(Player *plr)
             break;
         }
     }
+    else
+    {
+        ReloadGun(plr);
+    }
 }
 
 void ReloadGun(Player *plr)
@@ -231,8 +235,9 @@ void UpdateReload(Player *plr)
             currentGun->reloadingTimer = 0.0f;
             if (currentGun->reserveAmmo >= currentGun->maxAmmo)
             {
+                int ammoLeft = currentGun->maxAmmo - currentGun->ammo;
                 currentGun->ammo = currentGun->maxAmmo;
-                currentGun->reserveAmmo -= currentGun->maxAmmo;
+                currentGun->reserveAmmo -= ammoLeft;
             }
             else
             {

@@ -46,6 +46,8 @@ void UpdateUI(UI* ui)
     }
 }
 
+#define DRAW_FPS
+
 void DrawUI(UI* ui)
 {
     int screenWidth = GetScreenWidth();
