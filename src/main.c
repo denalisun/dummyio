@@ -5,12 +5,10 @@
 #include "game/world.h"
 #include "game/gun.h"
 #include "game/state.h"
-#include "structs/array.h"
-#include "utils.h"
-#include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <limits.h>
+#include "data/fonts.h"
 
 //#define PLATFORM_WEB
 #if defined(PLATFORM_WEB)
@@ -19,14 +17,18 @@
 
 GameState gameState;
 GameWorld *world;
-// const char* splashText;
+Font MAIN_FONT;
 
 void UpdateGameLoop(void); // This is for web programming
 
 int main()
 {
+    // MAIN_FONT = LoadFontEx("assets/fonts/bytesized.ttf", 32, 0, 250);
     InitWindow(1280, 720, "DUMMY");
     SetWindowState(FLAG_WINDOW_RESIZABLE);
+
+    // MAIN_FONT = LoadFont("assets/fonts/bytesized.ttf");
+    MAIN_FONT = LoadFontEx("assets/fonts/bytesized.ttf", 1024, 0, 250);
 
     gameState = STATE_MAINMENU;
 
@@ -49,12 +51,22 @@ void UpdateGameLoop(void)
     if (gameState == STATE_MAINMENU)
     {
         BeginDrawing();
+        ClearBackground((Color){
+            .r = 76.0f,
+            .g = 22.0f,
+            .b = 22.0f,
+            .a = 255.0f
+        });
+
+        // Color textColor = (Color){ 105, 105, 105, 255 };
 
         int screenWidth = GetScreenWidth();
+        int screenHeight = GetScreenHeight();
 
         char titleText[] = "DUMMY";
-        DrawText(titleText, (screenWidth / 2) - (MeasureText(titleText, 48) / 2), 58, 48, WHITE);
-        DrawText("Press Enter to Play!", (screenWidth / 2) - (MeasureText("Press Enter to Play!", 36) / 2), 56 + 36 + 10, 36, LIGHTGRAY);
+        DrawTextEx(MAIN_FONT, titleText, (Vector2){(screenWidth / 2) - (MeasureTextEx(MAIN_FONT, titleText, 92, 2).x / 2), 0}, 92, 2, WHITE);
+        // DrawText("created by denalisun (c) 2025", 10, screenHeight - 10 - 24, 24, WHITE);
+        DrawTextEx(MAIN_FONT, "created by denalisun (c) 2025", (Vector2){10, screenHeight - MeasureTextEx(MAIN_FONT, "created by denalisun (c) 2025", 36, 2).y}, 36, 2, WHITE);
 
         if (IsKeyPressed(KEY_ENTER))
         {
@@ -88,7 +100,7 @@ void UpdateGameLoop(void)
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
             };
             world = ConstructWorld(baseWorldMap);
-            world->LocalUI = ConstructUI(world);
+            world->LocalUI = ConstructUI(world, MAIN_FONT);
             
             Camera2D camera = (Camera2D){ 
                 .offset = (Vector2){ 0.0f, 0.0f },
