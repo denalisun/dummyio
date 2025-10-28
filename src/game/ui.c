@@ -44,6 +44,13 @@ void UpdateUI(UI* ui)
             if (ui->cmdBufLetterCount < 0) ui->cmdBufLetterCount = 0;
             ui->cmdBuf[ui->cmdBufLetterCount] = '\0';
         }
+
+        if (IsKeyPressed(KEY_ENTER))
+        {
+            ui->cmdBufLetterCount = 0;
+            memset(ui->cmdBuf, '\0', sizeof(char) * 256);
+            ui->bConsoleEnabled = false;
+        }
     }
 }
 
@@ -125,9 +132,9 @@ void DrawUI(UI* ui)
     // Draw Console
     if (ui->bConsoleEnabled)
     {
-        DrawRectangle(0, screenHeight - 17, screenWidth, 17, DARKGRAY);
-        DrawRectangleLines(0, screenHeight - 17, screenWidth, 17, WHITE);
-        DrawText(ui->cmdBuf, 2, screenHeight - 12, 12, WHITE);
+        DrawRectangle(0, 0, screenWidth, 17, DARKGRAY);
+        DrawRectangleLines(0, 0, screenWidth, 17, WHITE);
+        DrawText(ui->cmdBuf, 2, 5, 12, WHITE);
     }
 
     // Draw FPS

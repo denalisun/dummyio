@@ -17,5 +17,8 @@ web:
 
 all: build win web
 
+run: build
+	bin/dummy
+
 clean:
 	rm -rf bin

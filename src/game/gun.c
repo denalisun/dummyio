@@ -14,5 +14,6 @@ Gun* ConstructGun(const char* name, float fireRate, float damage, int ammo, int 
     gun->fireMode = fireMode;
     gun->reloadTime = reloadTime;
     gun->reloadingTimer = 0.0f;
+    gun->adsCenterBias = 0.85f;
     return gun;
 }

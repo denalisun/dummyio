@@ -103,9 +103,16 @@ void UpdatePlayer(Player *plr)
     }
 #endif
 
-    if (plr->bIsADS)
+    Gun* currentGun = plr->AllGuns[plr->EquippedGun];
+    if (plr->bIsADS && currentGun != NULL)
     {
-        plr->camera->offset = (Vector2){ screenWidth/2.0f + (25 * -cos(plr->rotation)), screenHeight/2.0f + (25 * -sin(plr->rotation)) };
+        float summedMouseX = mousePos.x / screenWidth;
+        float summedMouseY = mousePos.y / screenHeight;
+        
+        summedMouseX = 0.5f + (summedMouseX - 0.5f) * (1.0f - currentGun->adsCenterBias);
+        summedMouseY = 0.5f + (summedMouseY - 0.5f) * (1.0f - currentGun->adsCenterBias);
+
+        plr->camera->offset = (Vector2){ screenWidth - (screenWidth * summedMouseX), screenHeight - (screenHeight * summedMouseY) };
         if (plr->baseZoom < 1.2f)
         {
             plr->baseZoom += 1 * GetFrameTime();

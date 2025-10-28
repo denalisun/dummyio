@@ -2,6 +2,7 @@
 #define UI_H
 
 #include <stdbool.h>
+#include "raylib.h"
 
 struct GameWorld;
 

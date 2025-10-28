@@ -17,6 +17,7 @@
 
 GameState gameState;
 GameWorld *world;
+UI *ui;
 Font MAIN_FONT;
 
 void UpdateGameLoop(void); // This is for web programming
@@ -45,30 +46,53 @@ int main()
     return 0;
 }
 
+const Color unselectedColor = (Color){46, 65, 102, 255};
+const Color selectedColor = (Color){75, 120, 166, 255};
+
 void UpdateGameLoop(void)
 {
     // Updating stuff
     if (gameState == STATE_MAINMENU)
     {
+        // Draw main menu
         BeginDrawing();
-        ClearBackground((Color){
-            .r = 76.0f,
-            .g = 22.0f,
-            .b = 22.0f,
-            .a = 255.0f
-        });
-
-        // Color textColor = (Color){ 105, 105, 105, 255 };
-
+        ClearBackground((Color){11, 9, 20, 255});
+        
         int screenWidth = GetScreenWidth();
         int screenHeight = GetScreenHeight();
-
+        
         char titleText[] = "DUMMY";
-        DrawTextEx(MAIN_FONT, titleText, (Vector2){(screenWidth / 2) - (MeasureTextEx(MAIN_FONT, titleText, 92, 2).x / 2), 0}, 92, 2, WHITE);
-        // DrawText("created by denalisun (c) 2025", 10, screenHeight - 10 - 24, 24, WHITE);
-        DrawTextEx(MAIN_FONT, "created by denalisun (c) 2025", (Vector2){10, screenHeight - MeasureTextEx(MAIN_FONT, "created by denalisun (c) 2025", 36, 2).y}, 36, 2, WHITE);
+        Vector2 titleTextMeasurement = MeasureTextEx(MAIN_FONT, titleText, 184, 2);
+        DrawTextEx(MAIN_FONT, titleText, (Vector2){ (screenWidth / 2) - (titleTextMeasurement.x / 2), 0 }, 184, 2, WHITE);
+        
+        char copyrightText[] = "created by denalisun (c) 2025";
+        Vector2 copyrightMeasurement = MeasureTextEx(MAIN_FONT, copyrightText, 36, 2);
+        DrawTextEx(MAIN_FONT, copyrightText, (Vector2){ screenWidth - copyrightMeasurement.x, screenHeight - copyrightMeasurement.y }, 36, 2, WHITE);
+        
+        // Options
+        char playButtonText[] = "PLAY";
+        Vector2 playButtonMeasurement = MeasureTextEx(MAIN_FONT, playButtonText, 72, 2);
+        Rectangle playButtonBox = (Rectangle){
+            .x = (screenWidth / 2) - (playButtonMeasurement.x / 2) - 20,
+            .y = 250,
+            .width = playButtonMeasurement.x + 32,
+            .height = playButtonMeasurement.y,
+        };
+        bool bIsPlayButtonSelected = CheckCollisionPointRec(GetMousePosition(), playButtonBox);
+        DrawTextEx(MAIN_FONT, playButtonText, (Vector2){ (screenWidth / 2) - (playButtonMeasurement.x / 2), 250 }, 72, 2, bIsPlayButtonSelected ? selectedColor : unselectedColor);
 
-        if (IsKeyPressed(KEY_ENTER))
+        char optionsButtonText[] = "OPTIONS";
+        Vector2 optionsButtonMeasurement = MeasureTextEx(MAIN_FONT, optionsButtonText, 72, 2);
+        Rectangle optionsButtonBox = (Rectangle){
+            .x = (screenWidth / 2) - (optionsButtonMeasurement.x / 2) - 20,
+            .y = 350,
+            .width = optionsButtonMeasurement.x + 32,
+            .height = optionsButtonMeasurement.y
+        };
+        bool bIsOptionsButtonSelected = CheckCollisionPointRec(GetMousePosition(), optionsButtonBox);
+        DrawTextEx(MAIN_FONT, optionsButtonText, (Vector2){ (screenWidth / 2) - (optionsButtonMeasurement.x / 2), 350 }, 72, 2, bIsOptionsButtonSelected ? selectedColor : unselectedColor);
+
+        if (bIsPlayButtonSelected && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
             gameState = STATE_INGAME;
         }
