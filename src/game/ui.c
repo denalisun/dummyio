@@ -23,6 +23,11 @@ void UpdateUI(UI* ui)
         ui->bConsoleEnabled = !ui->bConsoleEnabled;
     }
 
+    if (IsKeyPressed(KEY_ESCAPE))
+    {
+        ui->world->bIsPaused = !ui->world->bIsPaused;
+    }
+
     if (ui->bConsoleEnabled)
     {
         int key = GetCharPressed();
@@ -52,6 +57,8 @@ void UpdateUI(UI* ui)
             ui->bConsoleEnabled = false;
         }
     }
+    
+    //TODO: Implement pausing functionality
 }
 
 // #define DRAW_FPS

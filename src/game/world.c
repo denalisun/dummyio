@@ -4,9 +4,10 @@
 #include <string.h>
 #include "raylib.h"
 
-GameWorld* ConstructWorld(int WorldMap[18][32])
+GameWorld* ConstructWorld(Game* game, int WorldMap[18][32])
 {
     GameWorld* p = malloc(sizeof(GameWorld));
+    p->game = game;
     p->CurrentWave = 0;
     p->AllZombies = calloc(ZOMBIE_COUNT, sizeof(Zombie *));
     ConstructArray(&p->AllProjectiles, 1);
@@ -14,6 +15,7 @@ GameWorld* ConstructWorld(int WorldMap[18][32])
     p->ZombiesSpawned = 0;
     p->ZombiesToSpawn = 0;
     p->WaveTimer = -1;
+    p->bIsPaused = false;
     p->CurrentWaveState = WAVE_ACTIVE;
     memcpy(p->WorldMap, WorldMap, sizeof(int[18][32]));
     return p;

@@ -5,6 +5,7 @@
 #include "game/world.h"
 #include "game/gun.h"
 #include "game/state.h"
+#include "game/game.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <limits.h>
@@ -15,9 +16,8 @@
     #include <emscripten/emscripten.h>
 #endif
 
-GameState gameState;
+Game *game;
 GameWorld *world;
-UI *ui;
 Font MAIN_FONT;
 
 void UpdateGameLoop(void); // This is for web programming
@@ -27,11 +27,11 @@ int main()
     // MAIN_FONT = LoadFontEx("assets/fonts/bytesized.ttf", 32, 0, 250);
     InitWindow(1280, 720, "DUMMY");
     SetWindowState(FLAG_WINDOW_RESIZABLE);
+    SetExitKey(KEY_NULL);
 
-    // MAIN_FONT = LoadFont("assets/fonts/bytesized.ttf");
+    game = ConstructGame(STATE_MAINMENU, NULL);
+
     MAIN_FONT = LoadFontEx("assets/fonts/bytesized.ttf", 1024, 0, 250);
-
-    gameState = STATE_MAINMENU;
 
 #ifdef PLATFORM_WEB
     emscripten_set_main_loop(UpdateGameLoop, 0, 1);
@@ -52,7 +52,7 @@ const Color selectedColor = (Color){75, 120, 166, 255};
 void UpdateGameLoop(void)
 {
     // Updating stuff
-    if (gameState == STATE_MAINMENU)
+    if (game->currentState == STATE_MAINMENU)
     {
         // Draw main menu
         BeginDrawing();
@@ -63,7 +63,7 @@ void UpdateGameLoop(void)
         
         char titleText[] = "DUMMY";
         Vector2 titleTextMeasurement = MeasureTextEx(MAIN_FONT, titleText, 184, 2);
-        DrawTextEx(MAIN_FONT, titleText, (Vector2){ (screenWidth / 2) - (titleTextMeasurement.x / 2), 0 }, 184, 2, WHITE);
+        DrawTextEx(MAIN_FONT, titleText, (Vector2){ ((float)screenWidth / 2) - (titleTextMeasurement.x / 2), 0 }, 184, 2, WHITE);
         
         char copyrightText[] = "created by denalisun (c) 2025";
         Vector2 copyrightMeasurement = MeasureTextEx(MAIN_FONT, copyrightText, 36, 2);
@@ -73,33 +73,47 @@ void UpdateGameLoop(void)
         char playButtonText[] = "PLAY";
         Vector2 playButtonMeasurement = MeasureTextEx(MAIN_FONT, playButtonText, 72, 2);
         Rectangle playButtonBox = (Rectangle){
-            .x = (screenWidth / 2) - (playButtonMeasurement.x / 2) - 20,
+            .x = ((float)screenWidth / 2) - (playButtonMeasurement.x / 2) - 20,
             .y = 250,
             .width = playButtonMeasurement.x + 32,
             .height = playButtonMeasurement.y,
         };
         bool bIsPlayButtonSelected = CheckCollisionPointRec(GetMousePosition(), playButtonBox);
-        DrawTextEx(MAIN_FONT, playButtonText, (Vector2){ (screenWidth / 2) - (playButtonMeasurement.x / 2), 250 }, 72, 2, bIsPlayButtonSelected ? selectedColor : unselectedColor);
+        DrawTextEx(MAIN_FONT, playButtonText, (Vector2){ ((float)screenWidth / 2) - (playButtonMeasurement.x / 2), 250 }, 72, 2, bIsPlayButtonSelected ? selectedColor : unselectedColor);
 
         char optionsButtonText[] = "OPTIONS";
         Vector2 optionsButtonMeasurement = MeasureTextEx(MAIN_FONT, optionsButtonText, 72, 2);
         Rectangle optionsButtonBox = (Rectangle){
-            .x = (screenWidth / 2) - (optionsButtonMeasurement.x / 2) - 20,
+            .x = ((float)screenWidth / 2) - (optionsButtonMeasurement.x / 2) - 20,
             .y = 350,
             .width = optionsButtonMeasurement.x + 32,
             .height = optionsButtonMeasurement.y
         };
         bool bIsOptionsButtonSelected = CheckCollisionPointRec(GetMousePosition(), optionsButtonBox);
-        DrawTextEx(MAIN_FONT, optionsButtonText, (Vector2){ (screenWidth / 2) - (optionsButtonMeasurement.x / 2), 350 }, 72, 2, bIsOptionsButtonSelected ? selectedColor : unselectedColor);
+        DrawTextEx(MAIN_FONT, optionsButtonText, (Vector2){ ((float)screenWidth / 2) - (optionsButtonMeasurement.x / 2), 350 }, 72, 2, bIsOptionsButtonSelected ? selectedColor : unselectedColor);
 
         if (bIsPlayButtonSelected && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
-            gameState = STATE_INGAME;
+            game->currentState = STATE_INGAME;
         }
 
         EndDrawing();
     }
-    else if (gameState == STATE_INGAME)
+    else if (game->currentState == STATE_OPTIONSMENU)
+    {
+        BeginDrawing();
+        ClearBackground((Color){ 11, 9, 20, 255 });
+
+        /*
+        int screenWidth = GetScreenWidth();
+        int screenHeight = GetScreenHeight();
+
+        char optionsTitleText[] = "OPTIONS";
+        */
+
+        EndDrawing();
+    }
+    else if (game->currentState == STATE_INGAME)
     {
         if (world == NULL)
         {
@@ -123,7 +137,7 @@ void UpdateGameLoop(void)
                 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
             };
-            world = ConstructWorld(baseWorldMap);
+            world = ConstructWorld(game, baseWorldMap);
             world->LocalUI = ConstructUI(world, MAIN_FONT);
             
             Camera2D camera = (Camera2D){ 
