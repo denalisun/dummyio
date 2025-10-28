@@ -188,7 +188,7 @@ void FireGun(Player *plr)
         switch (currentGun->fireMode)
         {
         case FIREMODE_AUTO:
-            if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && plr->fireTime == 0.0f)
+            if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && plr->fireTime == 0.0f && currentGun->reloadingTimer == 0.0f)
             {
                 WorldSpawnProjectile(plr->world, currentGun, plr, plr->rotation);
                 plr->fireTime = currentGun->fireRate;
@@ -196,7 +196,7 @@ void FireGun(Player *plr)
             }
             break;
         case FIREMODE_SEMIAUTO:
-            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && plr->fireTime == 0.0f)
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && plr->fireTime == 0.0f && currentGun->reloadingTimer == 0.0f)
             {
                 WorldSpawnProjectile(plr->world, currentGun, plr, plr->rotation);
                 plr->fireTime = currentGun->fireRate;
