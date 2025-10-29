@@ -63,7 +63,9 @@ void UpdateGameLoop(void)
         
         char titleText[] = "DUMMY";
         Vector2 titleTextMeasurement = MeasureTextEx(MAIN_FONT, titleText, 184, 2);
-        DrawTextEx(MAIN_FONT, titleText, (Vector2){ ((float)screenWidth / 2) - (titleTextMeasurement.x / 2), 0 }, 184, 2, WHITE);
+        DrawTextEx(MAIN_FONT, titleText, (Vector2){ screenWidth - titleTextMeasurement.x, 0 }, 184, 2, WHITE);
+        //DrawLine(screenWidth, titleTextMeasurement.y, (int)(screenWidth / 2), titleTextMeasurement.y, GRAY);
+        DrawLineEx((Vector2){ screenWidth, titleTextMeasurement.y }, (Vector2){ (int)(screenWidth / 2), titleTextMeasurement.y - 10 }, 10, GRAY);
         
         char copyrightText[] = "created by denalisun (c) 2025";
         Vector2 copyrightMeasurement = MeasureTextEx(MAIN_FONT, copyrightText, 36, 2);
@@ -87,7 +89,7 @@ void UpdateGameLoop(void)
             .x = ((float)screenWidth / 2) - (optionsButtonMeasurement.x / 2) - 20,
             .y = 350,
             .width = optionsButtonMeasurement.x + 32,
-            .height = optionsButtonMeasurement.y
+            .height = optionsButtonMeasurement.y,
         };
         bool bIsOptionsButtonSelected = CheckCollisionPointRec(GetMousePosition(), optionsButtonBox);
         DrawTextEx(MAIN_FONT, optionsButtonText, (Vector2){ ((float)screenWidth / 2) - (optionsButtonMeasurement.x / 2), 350 }, 72, 2, bIsOptionsButtonSelected ? selectedColor : unselectedColor);
