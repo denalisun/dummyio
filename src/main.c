@@ -97,6 +97,11 @@ void UpdateGameLoop(void)
             game->currentState = STATE_INGAME;
         }
 
+        if (bIsOptionsButtonSelected && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+        {
+            game->currentState = STATE_OPTIONSMENU;
+        }
+
         EndDrawing();
     }
     else if (game->currentState == STATE_OPTIONSMENU)
@@ -104,12 +109,13 @@ void UpdateGameLoop(void)
         BeginDrawing();
         ClearBackground((Color){ 11, 9, 20, 255 });
 
-        /*
         int screenWidth = GetScreenWidth();
-        int screenHeight = GetScreenHeight();
+        //int screenHeight = GetScreenHeight();
 
         char optionsTitleText[] = "OPTIONS";
-        */
+        Vector2 optionsTitleMeasurement = MeasureTextEx(MAIN_FONT, optionsTitleText, 184, 2);
+        DrawTextEx(MAIN_FONT, optionsTitleText, (Vector2){ ((float)screenWidth / 2) - (optionsTitleMeasurement.x / 2), 0 }, 184, 2, WHITE);
+
 
         EndDrawing();
     }
@@ -162,31 +168,34 @@ void UpdateGameLoop(void)
 
         UpdateUI(world->LocalUI);
 
-        for (int i = 0; i < ZOMBIE_COUNT; i++)
-        {
-            if (world->AllZombies[i] != 0)
-            {
-                Zombie* zm = world->AllZombies[i];
-                UpdateZombie(zm, world->LocalPlayer);
-                if (zm->health <= 0) world->AllZombies[i] = NULL;
-            }
-        }
-
-        UpdatePlayer(world->LocalPlayer);
-
-        WorldUpdateProjectiles(world);
-
-        if (IsKeyPressed(KEY_F))
+        if (!world->bIsPaused)
         {
             for (int i = 0; i < ZOMBIE_COUNT; i++)
             {
-                if (world->AllZombies[i] == 0) continue;
-                world->AllZombies[i] = 0;
+                if (world->AllZombies[i] != 0)
+                {
+                    Zombie* zm = world->AllZombies[i];
+                    UpdateZombie(zm, world->LocalPlayer);
+                    if (zm->health <= 0) world->AllZombies[i] = NULL;
+                }
             }
-        }
 
-        // Wave logic
-        WorldWaveLogic(world);
+            UpdatePlayer(world->LocalPlayer);
+
+            WorldUpdateProjectiles(world);
+
+            if (IsKeyPressed(KEY_F))
+            {
+                for (int i = 0; i < ZOMBIE_COUNT; i++)
+                {
+                    if (world->AllZombies[i] == 0) continue;
+                    world->AllZombies[i] = 0;
+                }
+            }
+
+            // Wave logic
+            WorldWaveLogic(world);
+        }
 
         // Rendering
         BeginDrawing();
@@ -204,6 +213,7 @@ void UpdateGameLoop(void)
 
         EndMode2D();
         DrawUI(world->LocalUI);
+
         EndDrawing();
     }
 }

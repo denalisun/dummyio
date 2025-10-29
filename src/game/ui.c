@@ -57,8 +57,6 @@ void UpdateUI(UI* ui)
             ui->bConsoleEnabled = false;
         }
     }
-    
-    //TODO: Implement pausing functionality
 }
 
 // #define DRAW_FPS
@@ -135,6 +133,14 @@ void DrawUI(UI* ui)
     redscreenColor.b = 0.0f;
     redscreenColor.a = 255.0f - ((ui->world->LocalPlayer->health / ui->world->LocalPlayer->maxHealth) * 255);
     DrawRectangle(0, 0, screenWidth, screenHeight, redscreenColor);
+
+    if (ui->world->bIsPaused)
+    {
+        char pausedText[] = "PAUSED";
+        DrawRectangle(0, 0, screenWidth, screenHeight, (Color){ 0, 0, 0, 178 });
+        textMeasure = MeasureTextEx(ui->mainFont, pausedText, 36, 2);
+        DrawTextEx(ui->mainFont, pausedText, (Vector2){ ((float)screenWidth / 2) - (textMeasure.x / 2), ((float)screenHeight / 2) - (textMeasure.y / 2) }, 36, 2, WHITE);
+    }
 
     // Draw Console
     if (ui->bConsoleEnabled)
