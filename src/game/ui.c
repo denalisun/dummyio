@@ -134,21 +134,37 @@ void DrawUI(UI* ui)
     redscreenColor.a = 255.0f - ((ui->world->LocalPlayer->health / ui->world->LocalPlayer->maxHealth) * 255);
     DrawRectangle(0, 0, screenWidth, screenHeight, redscreenColor);
 
-    if (ui->world->bIsPaused)
-    {
-        char pausedText[] = "PAUSED";
-        DrawRectangle(0, 0, screenWidth, screenHeight, (Color){ 0, 0, 0, 178 });
-        textMeasure = MeasureTextEx(ui->mainFont, pausedText, 36, 2);
-        DrawTextEx(ui->mainFont, pausedText, (Vector2){ ((float)screenWidth / 2) - (textMeasure.x / 2), ((float)screenHeight / 2) - (textMeasure.y / 2) }, 36, 2, WHITE);
-    }
-
-    // Draw Console
+    // Draw console
     if (ui->bConsoleEnabled)
     {
         DrawRectangle(0, 0, screenWidth, 17, DARKGRAY);
         DrawRectangleLines(0, 0, screenWidth, 17, WHITE);
         DrawText(ui->cmdBuf, 2, 5, 12, WHITE);
     }
+
+    // Draw pausing
+    if (ui->world->bIsPaused)
+    {
+        char pausedText[] = "PAUSED";
+        DrawRectangle(0, 0, screenWidth, screenHeight, (Color){ 0, 0, 0, 178 });
+        textMeasure = MeasureTextEx(ui->mainFont, pausedText, 72, 2);
+        DrawTextEx(ui->mainFont, pausedText, (Vector2){ 10, 10 }, 72, 2, WHITE);
+
+        // Selections
+        char resumeButtonText[] = "RESUME";
+        Vector2 resumeButtonMeasurement = MeasureTextEx(ui->mainFont, resumeButtonText, 36, 2);
+        Rectangle resumeButtonBox = (Rectangle){
+            .x = (screenWidth / 2) - (resumeButtonMeasurement.x / 2),
+            .y = 260,
+            .width = resumeButtonMeasurement.x,
+            .height = resumeButtonMeasurement.y - 20,
+        };
+        //bool bIsResumeButtonSelected = CheckCollisionPointRec(GetMousePosition(), resumeButtonBox);
+        DrawTextEx(ui->mainFont, resumeButtonText, (Vector2){ (screenWidth / 2) - (resumeButtonMeasurement.x / 2), 250 }, 36, 2, WHITE);
+
+        // This is for debug
+        DrawRectangleLinesEx(resumeButtonBox, 2, WHITE);
+    } 
 
     // Draw FPS
 #ifdef DRAW_FPS

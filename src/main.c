@@ -70,34 +70,34 @@ void UpdateGameLoop(void)
         Vector2 copyrightMeasurement = MeasureTextEx(MAIN_FONT, copyrightText, 24, 2);
         DrawTextEx(MAIN_FONT, copyrightText, (Vector2){ 5, screenHeight - copyrightMeasurement.y }, 24, 2, WHITE);
         
-        // Options
+        // Selections
         char playButtonText[] = "PLAY";
         Vector2 playButtonMeasurement = MeasureTextEx(MAIN_FONT, playButtonText, 72, 2);
         Rectangle playButtonBox = (Rectangle){
             .x = 20,
-            .y = 250,
-            .width = playButtonMeasurement.x + 32,
-            .height = playButtonMeasurement.y,
+            .y = 260,
+            .width = playButtonMeasurement.x,
+            .height = playButtonMeasurement.y - 20,
         };
         bool bIsPlayButtonSelected = CheckCollisionPointRec(GetMousePosition(), playButtonBox);
-        DrawTextEx(MAIN_FONT, playButtonText, (Vector2){ playButtonBox.x, playButtonBox.y }, 72, 2, bIsPlayButtonSelected ? selectedColor : unselectedColor);
+        DrawTextEx(MAIN_FONT, playButtonText, (Vector2){ 20, 250 }, 72, 2, bIsPlayButtonSelected ? selectedColor : unselectedColor);
 
         // This is for debug
-        DrawRectangleLinesEx(playButtonBox, 2, WHITE);
+        //DrawRectangleLinesEx(playButtonBox, 2, WHITE);
 
         char optionsButtonText[] = "OPTIONS";
         Vector2 optionsButtonMeasurement = MeasureTextEx(MAIN_FONT, optionsButtonText, 72, 2);
         Rectangle optionsButtonBox = (Rectangle){
             .x = 20,
-            .y = 300,
-            .width = optionsButtonMeasurement.x + 32,
-            .height = optionsButtonMeasurement.y,
+            .y = 320,
+            .width = optionsButtonMeasurement.x,
+            .height = optionsButtonMeasurement.y - 20,
         };
         bool bIsOptionsButtonSelected = CheckCollisionPointRec(GetMousePosition(), optionsButtonBox);
-        DrawTextEx(MAIN_FONT, optionsButtonText, (Vector2){ optionsButtonBox.x, optionsButtonBox.y }, 72, 2, bIsOptionsButtonSelected ? selectedColor : unselectedColor);
+        DrawTextEx(MAIN_FONT, optionsButtonText, (Vector2){ 20, 310 }, 72, 2, bIsOptionsButtonSelected ? selectedColor : unselectedColor);
 
         // This is for debug
-        DrawRectangleLinesEx(optionsButtonBox, 2, WHITE);
+        //DrawRectangleLinesEx(optionsButtonBox, 2, WHITE);
 
         if (bIsPlayButtonSelected && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
