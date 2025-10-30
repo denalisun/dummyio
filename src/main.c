@@ -64,35 +64,40 @@ void UpdateGameLoop(void)
         char titleText[] = "DUMMY";
         Vector2 titleTextMeasurement = MeasureTextEx(MAIN_FONT, titleText, 184, 2);
         DrawTextEx(MAIN_FONT, titleText, (Vector2){ screenWidth - titleTextMeasurement.x, 0 }, 184, 2, WHITE);
-        //DrawLine(screenWidth, titleTextMeasurement.y, (int)(screenWidth / 2), titleTextMeasurement.y, GRAY);
-        DrawLineEx((Vector2){ screenWidth, titleTextMeasurement.y }, (Vector2){ (int)(screenWidth / 2), titleTextMeasurement.y - 10 }, 10, GRAY);
-        
+        DrawLineEx((Vector2){ screenWidth, titleTextMeasurement.y - 20 }, (Vector2){ (int)(screenWidth / 2), titleTextMeasurement.y - 20 }, 10, WHITE);
+
         char copyrightText[] = "created by denalisun (c) 2025";
-        Vector2 copyrightMeasurement = MeasureTextEx(MAIN_FONT, copyrightText, 36, 2);
-        DrawTextEx(MAIN_FONT, copyrightText, (Vector2){ screenWidth - copyrightMeasurement.x, screenHeight - copyrightMeasurement.y }, 36, 2, WHITE);
+        Vector2 copyrightMeasurement = MeasureTextEx(MAIN_FONT, copyrightText, 24, 2);
+        DrawTextEx(MAIN_FONT, copyrightText, (Vector2){ 5, screenHeight - copyrightMeasurement.y }, 24, 2, WHITE);
         
         // Options
         char playButtonText[] = "PLAY";
         Vector2 playButtonMeasurement = MeasureTextEx(MAIN_FONT, playButtonText, 72, 2);
         Rectangle playButtonBox = (Rectangle){
-            .x = ((float)screenWidth / 2) - (playButtonMeasurement.x / 2) - 20,
+            .x = 20,
             .y = 250,
             .width = playButtonMeasurement.x + 32,
             .height = playButtonMeasurement.y,
         };
         bool bIsPlayButtonSelected = CheckCollisionPointRec(GetMousePosition(), playButtonBox);
-        DrawTextEx(MAIN_FONT, playButtonText, (Vector2){ ((float)screenWidth / 2) - (playButtonMeasurement.x / 2), 250 }, 72, 2, bIsPlayButtonSelected ? selectedColor : unselectedColor);
+        DrawTextEx(MAIN_FONT, playButtonText, (Vector2){ playButtonBox.x, playButtonBox.y }, 72, 2, bIsPlayButtonSelected ? selectedColor : unselectedColor);
+
+        // This is for debug
+        DrawRectangleLinesEx(playButtonBox, 2, WHITE);
 
         char optionsButtonText[] = "OPTIONS";
         Vector2 optionsButtonMeasurement = MeasureTextEx(MAIN_FONT, optionsButtonText, 72, 2);
         Rectangle optionsButtonBox = (Rectangle){
-            .x = ((float)screenWidth / 2) - (optionsButtonMeasurement.x / 2) - 20,
-            .y = 350,
+            .x = 20,
+            .y = 300,
             .width = optionsButtonMeasurement.x + 32,
             .height = optionsButtonMeasurement.y,
         };
         bool bIsOptionsButtonSelected = CheckCollisionPointRec(GetMousePosition(), optionsButtonBox);
-        DrawTextEx(MAIN_FONT, optionsButtonText, (Vector2){ ((float)screenWidth / 2) - (optionsButtonMeasurement.x / 2), 350 }, 72, 2, bIsOptionsButtonSelected ? selectedColor : unselectedColor);
+        DrawTextEx(MAIN_FONT, optionsButtonText, (Vector2){ optionsButtonBox.x, optionsButtonBox.y }, 72, 2, bIsOptionsButtonSelected ? selectedColor : unselectedColor);
+
+        // This is for debug
+        DrawRectangleLinesEx(optionsButtonBox, 2, WHITE);
 
         if (bIsPlayButtonSelected && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {

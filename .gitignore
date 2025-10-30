@@ -59,6 +59,7 @@ dkms.conf
 .cache/
 
 # Project-specific files
+bin/
 /dummy
 /dummy.exe
 /dummy.html
