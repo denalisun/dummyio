@@ -3,10 +3,12 @@
 
 struct GameWorld;
 #include "state.h"
+#include "raylib.h"
 
 typedef struct Game
 {
     GameState currentState;
+    Font mainFont;
     struct GameWorld* world;
 } Game;
 

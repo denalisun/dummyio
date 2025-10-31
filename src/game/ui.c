@@ -4,6 +4,7 @@
 #include "world.h"
 #include "ui.h"
 #include "raylib.h"
+#include "menu.h"
 
 UI* ConstructUI(GameWorld* world, Font mainFont)
 {
@@ -151,19 +152,27 @@ void DrawUI(UI* ui)
         DrawTextEx(ui->mainFont, pausedText, (Vector2){ 10, 10 }, 72, 2, WHITE);
 
         // Selections
-        char resumeButtonText[] = "RESUME";
-        Vector2 resumeButtonMeasurement = MeasureTextEx(ui->mainFont, resumeButtonText, 36, 2);
-        Rectangle resumeButtonBox = (Rectangle){
-            .x = (screenWidth / 2) - (resumeButtonMeasurement.x / 2),
-            .y = 260,
-            .width = resumeButtonMeasurement.x,
-            .height = resumeButtonMeasurement.y - 20,
-        };
-        //bool bIsResumeButtonSelected = CheckCollisionPointRec(GetMousePosition(), resumeButtonBox);
-        DrawTextEx(ui->mainFont, resumeButtonText, (Vector2){ (screenWidth / 2) - (resumeButtonMeasurement.x / 2), 250 }, 36, 2, WHITE);
+        bool bIsResumeSelected = RenderMenuButton(ui->world->game, "RESUME", 36, (Vector2){ 25, 250 }, WHITE, GRAY);
+        bool bIsQuitSelected = RenderMenuButton(ui->world->game, "QUIT", 36, (Vector2){ 25, 290 }, WHITE, GRAY);
 
-        // This is for debug
-        DrawRectangleLinesEx(resumeButtonBox, 2, WHITE);
+        if (bIsResumeSelected && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            ui->world->bIsPaused = false;
+        }
+
+        if (bIsQuitSelected && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            ui->world->game->currentState = STATE_MAINMENU;
+
+            // this is so bad oh my god
+            ui->world->game->world = NULL;
+            free(ui->world->game->world);
+            ui->world->LocalPlayer = NULL;
+            ui->world->LocalUI = NULL;
+            free(ui->world->LocalPlayer);
+            free(ui->world->LocalUI);
+            free(ui->world);
+        }
     } 
 
     // Draw FPS

@@ -11,6 +11,6 @@ typedef enum
     OPTIONS_MENU,
 } MenuState;
 
-bool RenderMenuButton(Game *game, const char* buttonText, float fontSize, Vector2 position);
+bool RenderMenuButton(Game *game, const char* buttonText, float fontSize, Vector2 position, Color tint, Color hoverTint);
 
 #endif

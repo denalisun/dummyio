@@ -139,6 +139,12 @@ void UpdatePlayer(Player *plr)
     }
     UpdateReload(plr);
 
+    //DEBUG
+    if (IsKeyPressed(KEY_U))
+    {
+        plr->AllGuns[plr->EquippedGun]->upgradeTier++;
+    }
+
     if (plr->fireTime > 0.0f) plr->fireTime -= GetFrameTime();
     if (plr->fireTime < 0.0f) plr->fireTime = 0.0f;
 

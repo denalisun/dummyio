@@ -6,6 +6,7 @@
 #include "game/gun.h"
 #include "game/state.h"
 #include "game/game.h"
+#include "game/menu.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <limits.h>
@@ -17,7 +18,6 @@
 #endif
 
 Game *game;
-GameWorld *world;
 Font MAIN_FONT;
 
 void UpdateGameLoop(void); // This is for web programming
@@ -30,8 +30,9 @@ int main()
     SetExitKey(KEY_NULL);
 
     game = ConstructGame(STATE_MAINMENU, NULL);
-
+    
     MAIN_FONT = LoadFontEx("assets/fonts/bytesized.ttf", 1024, 0, 250);
+    game->mainFont = MAIN_FONT;
 
 #ifdef PLATFORM_WEB
     emscripten_set_main_loop(UpdateGameLoop, 0, 1);
@@ -46,8 +47,8 @@ int main()
     return 0;
 }
 
-const Color unselectedColor = (Color){46, 65, 102, 255};
-const Color selectedColor = (Color){75, 120, 166, 255};
+const Color unselectedColor = {46, 65, 102, 255};
+const Color selectedColor = {75, 120, 166, 255};
 
 void UpdateGameLoop(void)
 {
@@ -71,33 +72,8 @@ void UpdateGameLoop(void)
         DrawTextEx(MAIN_FONT, copyrightText, (Vector2){ 5, screenHeight - copyrightMeasurement.y }, 24, 2, WHITE);
         
         // Selections
-        char playButtonText[] = "PLAY";
-        Vector2 playButtonMeasurement = MeasureTextEx(MAIN_FONT, playButtonText, 72, 2);
-        Rectangle playButtonBox = (Rectangle){
-            .x = 20,
-            .y = 260,
-            .width = playButtonMeasurement.x,
-            .height = playButtonMeasurement.y - 20,
-        };
-        bool bIsPlayButtonSelected = CheckCollisionPointRec(GetMousePosition(), playButtonBox);
-        DrawTextEx(MAIN_FONT, playButtonText, (Vector2){ 20, 250 }, 72, 2, bIsPlayButtonSelected ? selectedColor : unselectedColor);
-
-        // This is for debug
-        //DrawRectangleLinesEx(playButtonBox, 2, WHITE);
-
-        char optionsButtonText[] = "OPTIONS";
-        Vector2 optionsButtonMeasurement = MeasureTextEx(MAIN_FONT, optionsButtonText, 72, 2);
-        Rectangle optionsButtonBox = (Rectangle){
-            .x = 20,
-            .y = 320,
-            .width = optionsButtonMeasurement.x,
-            .height = optionsButtonMeasurement.y - 20,
-        };
-        bool bIsOptionsButtonSelected = CheckCollisionPointRec(GetMousePosition(), optionsButtonBox);
-        DrawTextEx(MAIN_FONT, optionsButtonText, (Vector2){ 20, 310 }, 72, 2, bIsOptionsButtonSelected ? selectedColor : unselectedColor);
-
-        // This is for debug
-        //DrawRectangleLinesEx(optionsButtonBox, 2, WHITE);
+        bool bIsPlayButtonSelected = RenderMenuButton(game, "PLAY", 72, (Vector2){ 20, 250 }, unselectedColor, selectedColor);
+        bool bIsOptionsButtonSelected = RenderMenuButton(game, "OPTIONS", 72, (Vector2){ 20, 310 }, unselectedColor, selectedColor);
 
         if (bIsPlayButtonSelected && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
@@ -123,12 +99,11 @@ void UpdateGameLoop(void)
         Vector2 optionsTitleMeasurement = MeasureTextEx(MAIN_FONT, optionsTitleText, 184, 2);
         DrawTextEx(MAIN_FONT, optionsTitleText, (Vector2){ ((float)screenWidth / 2) - (optionsTitleMeasurement.x / 2), 0 }, 184, 2, WHITE);
 
-
         EndDrawing();
     }
     else if (game->currentState == STATE_INGAME)
     {
-        if (world == NULL)
+        if (game->world == NULL)
         {
             int baseWorldMap[18][32] = {
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -150,8 +125,8 @@ void UpdateGameLoop(void)
                 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
             };
-            world = ConstructWorld(game, baseWorldMap);
-            world->LocalUI = ConstructUI(world, MAIN_FONT);
+            game->world = ConstructWorld(game, baseWorldMap);
+            game->world->LocalUI = ConstructUI(game->world, MAIN_FONT);
             
             Camera2D camera = (Camera2D){ 
                 .offset = (Vector2){ 0.0f, 0.0f },
@@ -162,7 +137,7 @@ void UpdateGameLoop(void)
             camera.rotation = 0;
             camera.zoom = 1.0f;
 
-            world->LocalPlayer = ConstructPlayer(200, 100, 100, 100, world, &camera);
+            game->world->LocalPlayer = ConstructPlayer(200, 100, 100, 100, game->world, &camera);
             
             // Gun* testGun = ConstructGun("TestGun", 0.01, 10, 10, 10, INT_MAX, INT_MAX, 2.0f, FIREMODE_SEMIAUTO);
             // Gun* testAutoGun = ConstructGun("TestAutomatic", 0.025, 25, 30, 30, 180, 180, 3.0f, FIREMODE_AUTO);
@@ -170,56 +145,56 @@ void UpdateGameLoop(void)
             // GiveGun(localPlayer, testAutoGun);
 
             Gun* machineGun = ConstructGun("MG-42", 0.025, 10, 120, 120, 480, 480, 3.0f, FIREMODE_AUTO);
-            GiveGun(world->LocalPlayer, machineGun);
+            GiveGun(game->world->LocalPlayer, machineGun);
         }
 
-        UpdateUI(world->LocalUI);
+        UpdateUI(game->world->LocalUI);
 
-        if (!world->bIsPaused)
+        if (!game->world->bIsPaused)
         {
             for (int i = 0; i < ZOMBIE_COUNT; i++)
             {
-                if (world->AllZombies[i] != 0)
+                if (game->world->AllZombies[i] != 0)
                 {
-                    Zombie* zm = world->AllZombies[i];
-                    UpdateZombie(zm, world->LocalPlayer);
-                    if (zm->health <= 0) world->AllZombies[i] = NULL;
+                    Zombie* zm = game->world->AllZombies[i];
+                    UpdateZombie(zm, game->world->LocalPlayer);
+                    if (zm->health <= 0) game->world->AllZombies[i] = NULL;
                 }
             }
 
-            UpdatePlayer(world->LocalPlayer);
+            UpdatePlayer(game->world->LocalPlayer);
 
-            WorldUpdateProjectiles(world);
+            WorldUpdateProjectiles(game->world);
 
             if (IsKeyPressed(KEY_F))
             {
                 for (int i = 0; i < ZOMBIE_COUNT; i++)
                 {
-                    if (world->AllZombies[i] == 0) continue;
-                    world->AllZombies[i] = 0;
+                    if (game->world->AllZombies[i] == 0) continue;
+                    game->world->AllZombies[i] = 0;
                 }
             }
 
             // Wave logic
-            WorldWaveLogic(world);
+            WorldWaveLogic(game->world);
         }
 
         // Rendering
         BeginDrawing();
         ClearBackground(BLACK);
-        BeginMode2D(*world->LocalPlayer->camera);
+        BeginMode2D(*game->world->LocalPlayer->camera);
 
-        WorldRenderMap(world);
+        WorldRenderMap(game->world);
         
-        DrawPlayer(world->LocalPlayer);
+        DrawPlayer(game->world->LocalPlayer);
         for (int i = 0; i < ZOMBIE_COUNT; i++) {
-            if (world->AllZombies[i] != 0) DrawZombie(world->AllZombies[i]);
+            if (game->world->AllZombies[i] != 0) DrawZombie(game->world->AllZombies[i]);
         }
 
-        WorldRenderProjectiles(world);
+        WorldRenderProjectiles(game->world);
 
         EndMode2D();
-        DrawUI(world->LocalUI);
+        DrawUI(game->world->LocalUI);
 
         EndDrawing();
     }

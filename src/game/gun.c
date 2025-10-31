@@ -15,5 +15,11 @@ Gun* ConstructGun(const char* name, float fireRate, float damage, int ammo, int 
     gun->reloadTime = reloadTime;
     gun->reloadingTimer = 0.0f;
     gun->adsCenterBias = 0.85f;
+    gun->upgradeTier = 0;
     return gun;
+}
+
+float calculate_damage_from_upgrade(Gun *gun)
+{
+    return gun->damage * (gun->upgradeTier + 1);
 }
