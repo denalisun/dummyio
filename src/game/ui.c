@@ -5,6 +5,7 @@
 #include "ui.h"
 #include "raylib.h"
 #include "menu.h"
+//#include "../utils.h"
 
 UI* ConstructUI(GameWorld* world, Font mainFont)
 {
@@ -111,8 +112,12 @@ void DrawUI(UI* ui)
     textMeasure = MeasureTextEx(ui->mainFont, gun->name, 84, 2);
     DrawTextEx(ui->mainFont, gun->name, (Vector2){ (screenWidth - textMeasure.x) - hudBounds, (screenHeight - 84) - hudBounds }, 84, 2, WHITE);
 
-    // Draw upgrade number
-    
+    // Draw upgrade tier
+    //printf("%s tier: %s\n", gun->name, int_to_roman(gun->upgradeTier)); 
+    char upgradeTierBuf[6];
+    sprintf(upgradeTierBuf, "%d", gun->upgradeTier);
+    //Vector2 upgradeTierBufMeasure = MeasureTextEx(ui->mainFont, upgradeTierBuf, 48, 2);
+    DrawTextEx(ui->mainFont, upgradeTierBuf, (Vector2){ (screenWidth - textMeasure.x) - hudBounds, (screenHeight - 94) - hudBounds }, 48, 2, WHITE);
 
     // Draw ammo
     char ammoText[32];
@@ -127,7 +132,7 @@ void DrawUI(UI* ui)
         char reloadingText[13] = "Reloading...";
         // DrawText("Reloading...", (screenWidth / 2) - (MeasureText(reloadingText, 18) / 2), screenHeight - 48, 18, GRAY);
         textMeasure = MeasureTextEx(ui->mainFont, reloadingText, 32, 2);
-        DrawTextEx(ui->mainFont, reloadingText, (Vector2){ (screenWidth / 2) - (textMeasure.x / 2), screenHeight - 48 }, 32, 2, LIGHTGRAY);
+        DrawTextEx(ui->mainFont, reloadingText, (Vector2){ ((float)screenWidth / 2) - (textMeasure.x / 2), screenHeight - 48 }, 32, 2, LIGHTGRAY);
     }
 
     // Draw redscreen

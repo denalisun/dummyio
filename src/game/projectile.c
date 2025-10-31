@@ -36,6 +36,14 @@ void UpdateProjectile(Projectile *proj)
         {
             zm->health -= 10.0f;
             printf("hp: %f\n", zm->health);
+            if (zm->health > 0)
+            {
+                proj->plrRef->money += 3;
+            }
+            else
+            {
+                proj->plrRef->money += 50;
+            }
             proj->lifeTime = PROJECTILE_LIFETIME;
         }
     }
