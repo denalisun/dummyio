@@ -20,6 +20,9 @@ typedef struct Game
     
     // Settings
     ControlType controlType;
+
+    // Asset data
+    char** allMaps;
 } Game;
 
 Game* ConstructGame(GameState currentState, struct GameWorld* world);

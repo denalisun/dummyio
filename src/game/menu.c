@@ -118,17 +118,15 @@ void RenderLevelSelectMenu(Game *game)
 
     bool bQuitButtonSelected = RenderMenuButton(game, "BACK", 72, (Vector2){ 20, (screenHeight - 72) }, unselectedColor, selectedColor);
 
-    DIR *levelsFolder;
-    levelsFolder = opendir("./assets/levels");
-    if (levelsFolder == NULL)
+    for (int i = 0; i < ((int)sizeof(game->allMaps) / (int)sizeof(game->allMaps[0])); i++)
     {
-        printf("Unable to read level directory!");
+        char* map_name = game->allMaps[i];
+        bool bIsMapButtonPressed = RenderMenuButton(game, map_name, 36, (Vector2){ 20, 250 + (10 * i) }, unselectedColor, selectedColor);
+        if (bIsMapButtonPressed && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            printf("Awesome! %s\n", map_name);
+        }
     }
-    else
-    {
-        printf("Directory is open!");
-    }
-    closedir(levelsFolder);
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
