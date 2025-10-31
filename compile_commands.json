@@ -1,34 +1,189 @@
 [
- {
-  "directory": "D:\\Programming\\C\\dummyio",
-  "arguments": [
-   "x86_64-w64-mingw32-gcc",
-   "src/main.c",
-   "src/game/player.c",
-   "src/game/zombie.c",
-   "src/game/game.c",
-   "src/game/world.c",
-   "src/game/ui.c",
-   "src/game/menu.c",
-   "src/game/gun.c",
-   "src/game/projectile.c",
-   "src/structs/array.c",
-   "src/utils.c",
-   "-Wall",
-   "-Werror",
-   "-std=c99",
-   "-o",
-   "bin/dummy",
-   "-L",
-   "lib/",
-   "-lraylib.windows",
-   "-lm",
-   "-lopengl32",
-   "-lgdi32",
-   "-lwinmm",
-   "-I",
-   "include/"
-  ],
-  "file": "src/utils.c"
- }
-]
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Werror",
+      "-std=c99",
+      "-I",
+      "include/",
+      "-o",
+      "bin/dummy",
+      "src/main.c"
+    ],
+    "directory": "/home/denalisun/Programming/dummyio",
+    "file": "/home/denalisun/Programming/dummyio/src/main.c",
+    "output": "/home/denalisun/Programming/dummyio/bin/dummy"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Werror",
+      "-std=c99",
+      "-I",
+      "include/",
+      "-o",
+      "bin/dummy",
+      "src/game/player.c"
+    ],
+    "directory": "/home/denalisun/Programming/dummyio",
+    "file": "/home/denalisun/Programming/dummyio/src/game/player.c",
+    "output": "/home/denalisun/Programming/dummyio/bin/dummy"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Werror",
+      "-std=c99",
+      "-I",
+      "include/",
+      "-o",
+      "bin/dummy",
+      "src/game/zombie.c"
+    ],
+    "directory": "/home/denalisun/Programming/dummyio",
+    "file": "/home/denalisun/Programming/dummyio/src/game/zombie.c",
+    "output": "/home/denalisun/Programming/dummyio/bin/dummy"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Werror",
+      "-std=c99",
+      "-I",
+      "include/",
+      "-o",
+      "bin/dummy",
+      "src/game/game.c"
+    ],
+    "directory": "/home/denalisun/Programming/dummyio",
+    "file": "/home/denalisun/Programming/dummyio/src/game/game.c",
+    "output": "/home/denalisun/Programming/dummyio/bin/dummy"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Werror",
+      "-std=c99",
+      "-I",
+      "include/",
+      "-o",
+      "bin/dummy",
+      "src/game/world.c"
+    ],
+    "directory": "/home/denalisun/Programming/dummyio",
+    "file": "/home/denalisun/Programming/dummyio/src/game/world.c",
+    "output": "/home/denalisun/Programming/dummyio/bin/dummy"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Werror",
+      "-std=c99",
+      "-I",
+      "include/",
+      "-o",
+      "bin/dummy",
+      "src/game/ui.c"
+    ],
+    "directory": "/home/denalisun/Programming/dummyio",
+    "file": "/home/denalisun/Programming/dummyio/src/game/ui.c",
+    "output": "/home/denalisun/Programming/dummyio/bin/dummy"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Werror",
+      "-std=c99",
+      "-I",
+      "include/",
+      "-o",
+      "bin/dummy",
+      "src/game/menu.c"
+    ],
+    "directory": "/home/denalisun/Programming/dummyio",
+    "file": "/home/denalisun/Programming/dummyio/src/game/menu.c",
+    "output": "/home/denalisun/Programming/dummyio/bin/dummy"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Werror",
+      "-std=c99",
+      "-I",
+      "include/",
+      "-o",
+      "bin/dummy",
+      "src/game/gun.c"
+    ],
+    "directory": "/home/denalisun/Programming/dummyio",
+    "file": "/home/denalisun/Programming/dummyio/src/game/gun.c",
+    "output": "/home/denalisun/Programming/dummyio/bin/dummy"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Werror",
+      "-std=c99",
+      "-I",
+      "include/",
+      "-o",
+      "bin/dummy",
+      "src/game/projectile.c"
+    ],
+    "directory": "/home/denalisun/Programming/dummyio",
+    "file": "/home/denalisun/Programming/dummyio/src/game/projectile.c",
+    "output": "/home/denalisun/Programming/dummyio/bin/dummy"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Werror",
+      "-std=c99",
+      "-I",
+      "include/",
+      "-o",
+      "bin/dummy",
+      "src/structs/array.c"
+    ],
+    "directory": "/home/denalisun/Programming/dummyio",
+    "file": "/home/denalisun/Programming/dummyio/src/structs/array.c",
+    "output": "/home/denalisun/Programming/dummyio/bin/dummy"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Werror",
+      "-std=c99",
+      "-I",
+      "include/",
+      "-o",
+      "bin/dummy",
+      "src/utils.c"
+    ],
+    "directory": "/home/denalisun/Programming/dummyio",
+    "file": "/home/denalisun/Programming/dummyio/src/utils.c",
+    "output": "/home/denalisun/Programming/dummyio/bin/dummy"
+  }
+]

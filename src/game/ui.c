@@ -111,6 +111,9 @@ void DrawUI(UI* ui)
     textMeasure = MeasureTextEx(ui->mainFont, gun->name, 84, 2);
     DrawTextEx(ui->mainFont, gun->name, (Vector2){ (screenWidth - textMeasure.x) - hudBounds, (screenHeight - 84) - hudBounds }, 84, 2, WHITE);
 
+    // Draw upgrade number
+    
+
     // Draw ammo
     char ammoText[32];
     sprintf(ammoText, "%d / %d", gun->ammo, gun->reserveAmmo);
