@@ -1,138 +1,34 @@
 [
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-c",
-      "-Wall",
-      "-Werror",
-      "-std=c99",
-      "-I",
-      "include/",
-      "-o",
-      "dummy",
-      "src/main.c"
-    ],
-    "directory": "/home/amelia/Programming/dummyio",
-    "file": "/home/amelia/Programming/dummyio/src/main.c",
-    "output": "/home/amelia/Programming/dummyio/dummy"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-c",
-      "-Wall",
-      "-Werror",
-      "-std=c99",
-      "-I",
-      "include/",
-      "-o",
-      "dummy",
-      "src/game/player.c"
-    ],
-    "directory": "/home/amelia/Programming/dummyio",
-    "file": "/home/amelia/Programming/dummyio/src/game/player.c",
-    "output": "/home/amelia/Programming/dummyio/dummy"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-c",
-      "-Wall",
-      "-Werror",
-      "-std=c99",
-      "-I",
-      "include/",
-      "-o",
-      "dummy",
-      "src/game/zombie.c"
-    ],
-    "directory": "/home/amelia/Programming/dummyio",
-    "file": "/home/amelia/Programming/dummyio/src/game/zombie.c",
-    "output": "/home/amelia/Programming/dummyio/dummy"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-c",
-      "-Wall",
-      "-Werror",
-      "-std=c99",
-      "-I",
-      "include/",
-      "-o",
-      "dummy",
-      "src/game/world.c"
-    ],
-    "directory": "/home/amelia/Programming/dummyio",
-    "file": "/home/amelia/Programming/dummyio/src/game/world.c",
-    "output": "/home/amelia/Programming/dummyio/dummy"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-c",
-      "-Wall",
-      "-Werror",
-      "-std=c99",
-      "-I",
-      "include/",
-      "-o",
-      "dummy",
-      "src/game/ui.c"
-    ],
-    "directory": "/home/amelia/Programming/dummyio",
-    "file": "/home/amelia/Programming/dummyio/src/game/ui.c",
-    "output": "/home/amelia/Programming/dummyio/dummy"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-c",
-      "-Wall",
-      "-Werror",
-      "-std=c99",
-      "-I",
-      "include/",
-      "-o",
-      "dummy",
-      "src/game/gun.c"
-    ],
-    "directory": "/home/amelia/Programming/dummyio",
-    "file": "/home/amelia/Programming/dummyio/src/game/gun.c",
-    "output": "/home/amelia/Programming/dummyio/dummy"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-c",
-      "-Wall",
-      "-Werror",
-      "-std=c99",
-      "-I",
-      "include/",
-      "-o",
-      "dummy",
-      "src/game/projectile.c"
-    ],
-    "directory": "/home/amelia/Programming/dummyio",
-    "file": "/home/amelia/Programming/dummyio/src/game/projectile.c",
-    "output": "/home/amelia/Programming/dummyio/dummy"
-  },
-  {
-    "arguments": [
-      "/usr/bin/gcc",
-      "-c",
-      "-Wall",
-      "-Werror",
-      "-std=c99",
-      "-I",
-      "include/",
-      "-o",
-      "dummy",
-      "src/structs/array.c"
-    ],
-    "directory": "/home/amelia/Programming/dummyio",
-    "file": "/home/amelia/Programming/dummyio/src/structs/array.c",
-    "output": "/home/amelia/Programming/dummyio/dummy"
-  }
-]
+ {
+  "directory": "D:\\Programming\\C\\dummyio",
+  "arguments": [
+   "x86_64-w64-mingw32-gcc",
+   "src/main.c",
+   "src/game/player.c",
+   "src/game/zombie.c",
+   "src/game/game.c",
+   "src/game/world.c",
+   "src/game/ui.c",
+   "src/game/menu.c",
+   "src/game/gun.c",
+   "src/game/projectile.c",
+   "src/structs/array.c",
+   "src/utils.c",
+   "-Wall",
+   "-Werror",
+   "-std=c99",
+   "-o",
+   "bin/dummy",
+   "-L",
+   "lib/",
+   "-lraylib.windows",
+   "-lm",
+   "-lopengl32",
+   "-lgdi32",
+   "-lwinmm",
+   "-I",
+   "include/"
+  ],
+  "file": "src/utils.c"
+ }
+]

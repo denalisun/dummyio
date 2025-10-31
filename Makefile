@@ -20,5 +20,8 @@ all: build win web
 run: build
 	bin/dummy
 
+run-win: win
+	.\bin\dummy.exe
+
 clean:
 	rm -rf bin
