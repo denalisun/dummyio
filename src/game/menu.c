@@ -60,7 +60,7 @@ void RenderMainMenu(Game *game)
 
     if (bIsQuitButtonPressed && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     {
-        printf("Exit!\n");
+        game->bShouldClose = true;
     }
 
     EndDrawing();

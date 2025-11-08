@@ -17,6 +17,7 @@ typedef struct Game
     GameState currentState;
     Font mainFont;
     struct GameWorld* world;
+    bool bShouldClose;
     
     // Settings
     ControlType controlType;

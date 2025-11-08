@@ -37,7 +37,7 @@ int main()
 #ifdef PLATFORM_WEB
     emscripten_set_main_loop(UpdateGameLoop, 0, 1);
 #else
-    while (!WindowShouldClose()) {
+    while (!WindowShouldClose() && !game->bShouldClose) {
         UpdateGameLoop();
     }
 #endif
