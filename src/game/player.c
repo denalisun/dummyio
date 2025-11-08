@@ -25,25 +25,54 @@ Player* ConstructPlayer(float x, float y, float health, float maxHealth, GameWor
     plr->camera = camera;
     plr->baseZoom = 1.0f;
     plr->fireTime = 0.0f;
+    plr->cursorPos = GetMousePosition();
     return plr;
 }
 
 void UpdatePlayer(Player *plr)
 {
     //Gun* currentGun = plr->AllGuns[plr->EquippedGun];
-
-    float x = ((int)IsKeyDown(KEY_D) - (int)IsKeyDown(KEY_A)) * ((float)250 * GetFrameTime());
-    float y = ((int)IsKeyDown(KEY_S) - (int)IsKeyDown(KEY_W)) * ((float)250 * GetFrameTime());
     
-#ifdef USE_MOUSE_CONTROLS
+    float x, y;
+    float deadzone = 0.2;
+    if (plr->world->game->controlType == CONTROLTYPE_CONTROLLER)
+    {
+        x = 0.0f;
+        float leftStickX = GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_X);
+        if (leftStickX > deadzone || leftStickX < -deadzone)
+        {
+            x = leftStickX * ((float)250 * GetFrameTime());
+        }
+        
+        y = 0.0f;
+        float leftStickY = GetGamepadAxisMovement(0, GAMEPAD_AXIS_LEFT_Y);
+        if (leftStickY > deadzone || leftStickY < -(deadzone))
+        {
+            y = leftStickY * ((float)250 * GetFrameTime());
+        }
+    }
+    else
+    {
+        x = ((int)IsKeyDown(KEY_D) - (int)IsKeyDown(KEY_A)) * ((float)250 * GetFrameTime());
+        y = ((int)IsKeyDown(KEY_S) - (int)IsKeyDown(KEY_W)) * ((float)250 * GetFrameTime()); 
+    }
+
     const Vector2 mousePos = GetMousePosition();
-    plr->rotation = atan2(mousePos.y - (GetScreenHeight() / 2.0f), mousePos.x - (GetScreenWidth() / 2.0f));
-#else
-    plr->rotation += ((int)IsKeyDown(KEY_RIGHT) - (int)IsKeyDown(KEY_LEFT)) * ((float)15 * GetFrameTime());
-#endif
+    if (plr->world->game->controlType == CONTROLTYPE_CONTROLLER)
+    {
+        const Vector2 rightStickMovement = (Vector2){ GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_X) * ((float)600 * GetFrameTime()), GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_Y) * ((float)600 * GetFrameTime()) };
+        plr->cursorPos.x += rightStickMovement.x;
+        plr->cursorPos.y += rightStickMovement.y;
+    }
+    else
+    {
+        plr->cursorPos.x = GetMousePosition().x;
+        plr->cursorPos.y = GetMousePosition().y;
+    }
+    plr->rotation = atan2(plr->cursorPos.y - (GetScreenHeight() / 2.0f), plr->cursorPos.x - (GetScreenWidth() / 2.0f));
 
     // printf("%d\n", (int)GetMouseWheelMove());
-    if (IsKeyPressed(KEY_ONE))
+    if ((IsKeyPressed(KEY_ONE) && plr->world->game->controlType == CONTROLTYPE_MOUSE) || (plr->world->game->controlType == CONTROLTYPE_CONTROLLER && IsGamepadButtonPressed(0, 5)))
     {
         SwapGun(plr);
         printf("%d\n", plr->EquippedGun);
@@ -94,14 +123,14 @@ void UpdatePlayer(Player *plr)
     float screenHeight = GetScreenHeight();
     plr->camera->target = (Vector2){plr->x, plr->y};
 
-#ifdef USE_MOUSE_CONTROLS
-    plr->bIsADS = IsMouseButtonDown(MOUSE_BUTTON_RIGHT);
-#else
-    if (IsKeyPressed(KEY_X))
+    if (plr->world->game->controlType == CONTROLTYPE_CONTROLLER)
     {
-        plr->bIsADS = !plr->bIsADS;
+        plr->bIsADS = GetGamepadAxisMovement(0, GAMEPAD_AXIS_RIGHT_TRIGGER) > deadzone;
     }
-#endif
+    else
+    {
+        plr->bIsADS = IsMouseButtonPressed(MOUSE_RIGHT_BUTTON);
+    }
 
     Gun* currentGun = plr->AllGuns[plr->EquippedGun];
     if (plr->bIsADS && currentGun != NULL)
@@ -163,6 +192,13 @@ void DrawPlayer(Player *plr)
         plr->rotation * RAD2DEG,
         (Color){0xff, 0xb3, 0x19, 0xff});
     //DrawRectangleLines(plr->hitBox.x, plr->hitBox.y, plr->hitBox.width, plr->hitBox.height, RED);
+
+    EndMode2D();
+    if (plr->world->game->controlType == CONTROLTYPE_CONTROLLER)
+    {
+        DrawRectangle(plr->cursorPos.x - 25, plr->cursorPos.y - 25, 50, 50, WHITE);
+    }
+    BeginMode2D(*plr->camera);
 }
 
 void SwapGun(Player *plr)

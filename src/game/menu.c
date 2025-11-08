@@ -124,7 +124,8 @@ void RenderLevelSelectMenu(Game *game)
         bool bIsMapButtonPressed = RenderMenuButton(game, map_name, 36, (Vector2){ 20, 250 + (10 * i) }, unselectedColor, selectedColor);
         if (bIsMapButtonPressed && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
-            printf("Awesome! %s\n", map_name);
+            //printf("Awesome! %s\n", map_name);
+            game->currentState = STATE_INGAME;
         }
     }
 

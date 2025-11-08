@@ -24,6 +24,7 @@ typedef struct Player {
     int EquippedGun;
     bool bIsADS;
     float fireTime;
+    Vector2 cursorPos;
 } Player;
 
 Player* ConstructPlayer(float x, float y, float health, float maxHealth, struct GameWorld* world, Camera2D* camera);
