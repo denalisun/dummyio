@@ -46,6 +46,7 @@ void RenderMainMenu(Game *game)
     // Selections
     bool bIsPlayButtonSelected = RenderMenuButton(game, "PLAY", 72, (Vector2){ 20, 250 }, unselectedColor, selectedColor);
     bool bIsOptionsButtonSelected = RenderMenuButton(game, "OPTIONS", 72, (Vector2){ 20, 310 }, unselectedColor, selectedColor);
+    bool bIsQuitButtonPressed = RenderMenuButton(game, "QUIT", 72, (Vector2){ 20, 370 }, unselectedColor, selectedColor);
 
     if (bIsPlayButtonSelected && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     {
@@ -55,6 +56,11 @@ void RenderMainMenu(Game *game)
     if (bIsOptionsButtonSelected && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     {
         game->currentState = STATE_OPTIONSMENU;
+    }
+
+    if (bIsQuitButtonPressed && IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+    {
+        printf("Exit!\n");
     }
 
     EndDrawing();
