@@ -2,7 +2,18 @@
 
 CC=gcc
 OUT=bin/dummy
-SRC=src/main.c src/game/player.c src/game/zombie.c src/game/game.c src/game/world.c src/game/ui.c src/game/menu.c src/game/gun.c src/game/projectile.c src/structs/array.c src/utils.c
+SRC=src/main.c \
+	src/game/player.c \
+	src/game/zombie.c \
+	src/game/game.c \
+	src/game/world.c \
+	src/game/ui.c \
+	src/game/menu.c \
+	src/game/gun.c \
+	src/game/projectile.c \
+	src/structs/array.c \
+	src/utils.c \
+	include/cJSON.c
 LDFLAGS=-L lib/ -lraylib -lm -lGL -lpthread -ldl -lrt -lX11 -I include/
 CFLAGS=-Wall -Werror -std=c99
 
