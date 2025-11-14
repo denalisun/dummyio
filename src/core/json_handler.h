@@ -1,8 +1,8 @@
 #ifndef JSON_HANDLER_H
 #define JSON_HANDLER_H
 
-#include "cJSON.h"
+#include "../game/level.h"
 
-
+Level* ProcessMapJSON(const char* mapPath);
 
 #endif

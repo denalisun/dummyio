@@ -54,10 +54,17 @@ int height;
 void UpdateGameLoop(void)
 {
 #ifndef PLATFORM_WEB
+    if (!IsWindowFullscreen()) {
+        width = GetScreenWidth();
+        height = GetScreenHeight();
+    }
+
     if (IsKeyPressed(KEY_F11)) {
         if (!IsWindowFullscreen()) {
             int display = GetCurrentMonitor();
             SetWindowSize(GetMonitorWidth(display), GetMonitorHeight(display));
+        } else {
+            SetWindowSize(width, height);
         }
         ToggleFullscreen();
     }
