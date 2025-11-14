@@ -47,8 +47,22 @@ int main()
     return 0;
 }
 
+#ifndef PLATFORM_WEB
+int width;
+int height;
+#endif
 void UpdateGameLoop(void)
 {
+#ifndef PLATFORM_WEB
+    if (IsKeyPressed(KEY_F11)) {
+        if (!IsWindowFullscreen()) {
+            int display = GetCurrentMonitor();
+            SetWindowSize(GetMonitorWidth(display), GetMonitorHeight(display));
+        }
+        ToggleFullscreen();
+    }
+#endif
+
     // Testing out a switch statement
     switch (game->currentState)
     {
