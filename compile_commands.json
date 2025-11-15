@@ -185,5 +185,39 @@
     "directory": "/home/denalisun/Programming/dummyio",
     "file": "/home/denalisun/Programming/dummyio/src/utils.c",
     "output": "/home/denalisun/Programming/dummyio/bin/dummy"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Werror",
+      "-std=c99",
+      "-I",
+      "include/",
+      "-o",
+      "bin/dummy",
+      "src/core/json_handler.c"
+    ],
+    "directory": "/home/denalisun/Programming/dummyio",
+    "file": "/home/denalisun/Programming/dummyio/src/core/json_handler.c",
+    "output": "/home/denalisun/Programming/dummyio/bin/dummy"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-Wall",
+      "-Werror",
+      "-std=c99",
+      "-I",
+      "include/",
+      "-o",
+      "bin/dummy",
+      "include/cJSON.c"
+    ],
+    "directory": "/home/denalisun/Programming/dummyio",
+    "file": "/home/denalisun/Programming/dummyio/include/cJSON.c",
+    "output": "/home/denalisun/Programming/dummyio/bin/dummy"
   }
 ]

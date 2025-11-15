@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <dirent.h>
+#include "../core/json_handler.h"
+#include "world.h"
 
 void RenderBigTitle(Game *game, const char* titleText)
 {
@@ -131,7 +133,17 @@ void RenderLevelSelectMenu(Game *game)
         if (bIsMapButtonPressed && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
             //printf("Awesome! %s\n", map_name);
-            game->currentState = STATE_INGAME;
+            //game->currentState = STATE_INGAME;
+            char mapPath[22 + strlen(map_name)];
+            sprintf(mapPath, "assets/maps/%s/map.json", map_name);
+
+            Level* lvl = ProcessMapJSON(mapPath);
+            if (lvl == 0) {
+                printf("Augh\n");
+            } else {
+                GameWorld* world = ConstructWorld(game, lvl);
+                world->LocalUI = ConstructUI(world, game->mainFont);
+            }
         }
     }
 

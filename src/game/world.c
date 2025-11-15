@@ -4,7 +4,7 @@
 #include <string.h>
 #include "raylib.h"
 
-GameWorld* ConstructWorld(Game* game, int WorldMap[18][32])
+GameWorld* ConstructWorld(Game* game, Level* level)
 {
     GameWorld* p = malloc(sizeof(GameWorld));
     p->game = game;
@@ -17,7 +17,7 @@ GameWorld* ConstructWorld(Game* game, int WorldMap[18][32])
     p->WaveTimer = -1;
     p->bIsPaused = false;
     p->CurrentWaveState = WAVE_ACTIVE;
-    memcpy(p->WorldMap, WorldMap, sizeof(int[18][32]));
+    p->level = level;
     return p;
 }
 
@@ -45,9 +45,13 @@ void WorldAddZombie(GameWorld* world, float x, float y)
 
 void WorldRenderMap(GameWorld* world)
 {
-    for (int i = 0; i < (sizeof(world->WorldMap) / sizeof(world->WorldMap[0])); i++) {
-        for (int j = 0; j < (sizeof(world->WorldMap[i]) / sizeof(world->WorldMap[i][0])); j++) {
-            if (world->WorldMap[i][j] == 1) DrawRectangle(j * 40, i * 40, 40, 40, GRAY);
+    size_t size = sizeof(world->level->mapArr) / sizeof(world->level->mapArr[0]);
+    for (int i = 0; i < (int)size; i++) {
+        size_t sz = strlen(world->level->mapArr[i]);
+        for (int j = 0; j < (int)sz; j++) {
+            if (world->level->mapArr[i][j] == '#') {
+                DrawRectangle(j * 40, i * 40, 40, 40, GRAY);
+            }
         }
     }
 }
@@ -149,5 +153,5 @@ bool is_blocked(GameWorld* world, float x, float y)
     int tileX = (int)(x / 40);
     int tileY = (int)(y / 40);
 
-    return world->WorldMap[tileY][tileX] == 1;
+    return world->level->mapArr[tileY][tileX] == 1;
 }

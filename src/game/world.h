@@ -10,6 +10,7 @@
 #include "game.h"
 #include "projectile.h"
 #include "../structs/array.h"
+#include "level.h"
 
 typedef enum WaveState
 {
@@ -25,7 +26,7 @@ typedef struct GameWorld
     Array AllProjectiles;
     int ZombiesSpawned;
     int ZombiesToSpawn;
-    int WorldMap[18][32];
+    Level* level;
     int CurrentWave;
     float WaveTimer;
     WaveState CurrentWaveState;
@@ -33,7 +34,7 @@ typedef struct GameWorld
     bool bIsPaused;
 } GameWorld;
 
-GameWorld* ConstructWorld(Game* game, int WorldMap[18][32]);
+GameWorld* ConstructWorld(Game* game, Level* level);
 void WorldSetPlayer(GameWorld* world, Player* plr);
 void WorldAddZombie(GameWorld* world, float x, float y);
 void WorldRenderMap(GameWorld* world);

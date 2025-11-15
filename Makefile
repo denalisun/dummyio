@@ -13,6 +13,7 @@ SRC=src/main.c \
 	src/game/projectile.c \
 	src/structs/array.c \
 	src/utils.c \
+	src/core/json_handler.c \
 	include/cJSON.c
 LDFLAGS=-L lib/ -lraylib -lm -lGL -lpthread -ldl -lrt -lX11 -I include/
 CFLAGS=-Wall -Werror -std=c99
