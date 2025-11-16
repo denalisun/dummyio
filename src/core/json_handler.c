@@ -68,14 +68,16 @@ Level* ProcessMapJSON(const char *mapPath) {
     cJSON *mapStr;
     size_t mapLen = cJSON_GetArraySize(mapJSON);
     lvl->mapArr = malloc(sizeof(char*) * mapLen);
+    lvl->mapArrSizeY = mapLen;
+    lvl->mapArrSizeX = strlen(cJSON_GetArrayItem(mapJSON, 0)->valuestring);
     int i = 0;
     cJSON_ArrayForEach(mapStr, mapJSON) {
         lvl->mapArr[i] = mapStr->valuestring;
         printf("%s\n", mapStr->valuestring);
         i++;
     }
+
     cJSON_Delete(mapStr);
-    cJSON_Delete(mapJSON);
 
     return lvl;
 }

@@ -138,11 +138,19 @@ void RenderLevelSelectMenu(Game *game)
             sprintf(mapPath, "assets/maps/%s/map.json", map_name);
 
             Level* lvl = ProcessMapJSON(mapPath);
+            printf("Sigma!\n");
             if (lvl == 0) {
                 printf("Augh\n");
             } else {
-                GameWorld* world = ConstructWorld(game, lvl);
-                world->LocalUI = ConstructUI(world, game->mainFont);
+                game->currentState = STATE_INGAME;
+
+                game->world = ConstructWorld(game, lvl);
+                game->world->LocalUI = ConstructUI(game->world, game->mainFont);
+
+                game->world->LocalPlayer = ConstructPlayer(200, 100, 100, 100, game->world);
+
+                Gun* machineGun = ConstructGun("MG-42", 0.025, 10, 120, 120, 480, 480, 3.0f, FIREMODE_AUTO);
+                GiveGun(game->world->LocalPlayer, machineGun);
             }
         }
     }

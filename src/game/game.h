@@ -4,6 +4,7 @@
 struct GameWorld;
 #include "state.h"
 #include "raylib.h"
+#include "level.h"
 
 typedef enum ControlType
 {
@@ -24,8 +25,10 @@ typedef struct Game
 
     // Asset data
     char** allMaps;
+    Level* levelToLoad;
 } Game;
 
 Game* ConstructGame(GameState currentState, struct GameWorld* world);
+void SetupGameWorld(Game* game, Level* level); 
 
 #endif

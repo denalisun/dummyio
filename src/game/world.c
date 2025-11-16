@@ -45,10 +45,10 @@ void WorldAddZombie(GameWorld* world, float x, float y)
 
 void WorldRenderMap(GameWorld* world)
 {
-    size_t size = sizeof(world->level->mapArr) / sizeof(world->level->mapArr[0]);
-    for (int i = 0; i < (int)size; i++) {
-        size_t sz = strlen(world->level->mapArr[i]);
-        for (int j = 0; j < (int)sz; j++) {
+    printf("mapArrSizeY: %d\nmapArrSizeX: %d\n", (int)world->level->mapArrSizeY, (int)world->level->mapArrSizeX);
+    for (int i = 0; i < (int)world->level->mapArrSizeY; i++) {
+        for (int j = 0; j < (int)world->level->mapArrSizeX; j++) {
+            printf("%c\n", world->level->mapArr[i][j]);
             if (world->level->mapArr[i][j] == '#') {
                 DrawRectangle(j * 40, i * 40, 40, 40, GRAY);
             }

@@ -7,7 +7,7 @@
 
 #define USE_MOUSE_CONTROLS
 
-Player* ConstructPlayer(float x, float y, float health, float maxHealth, GameWorld* world, Camera2D* camera)
+Player* ConstructPlayer(float x, float y, float health, float maxHealth, GameWorld* world)
 {
     Player* plr = malloc(sizeof(Player));
     plr->x = x;
@@ -22,7 +22,14 @@ Player* ConstructPlayer(float x, float y, float health, float maxHealth, GameWor
     plr->AllGuns = calloc(GUN_SIZE, sizeof(Gun*));
     plr->EquippedGun = 0;
     plr->bIsADS = false;
-    plr->camera = camera;
+
+    Camera2D *cam = malloc(sizeof(Camera2D));
+    cam->offset = (Vector2){ 0.0f, 0.0f };
+    cam->rotation = 0.0f;
+    cam->zoom = 1.0f;
+    cam->target = (Vector2){ 0.0f, 0.0f };
+    plr->camera = cam;
+
     plr->baseZoom = 1.0f;
     plr->fireTime = 0.0f;
     plr->cursorPos = GetMousePosition();

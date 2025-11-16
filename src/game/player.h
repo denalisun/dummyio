@@ -27,7 +27,7 @@ typedef struct Player {
     Vector2 cursorPos;
 } Player;
 
-Player* ConstructPlayer(float x, float y, float health, float maxHealth, struct GameWorld* world, Camera2D* camera);
+Player* ConstructPlayer(float x, float y, float health, float maxHealth, struct GameWorld* world);
 void UpdatePlayer(Player *plr);
 void DrawPlayer(Player *plr);
 void SwapGun(Player *plr);
