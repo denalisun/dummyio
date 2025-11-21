@@ -153,5 +153,5 @@ bool is_blocked(GameWorld* world, float x, float y)
     int tileX = (int)(x / 40);
     int tileY = (int)(y / 40);
 
-    return world->level->mapArr[tileY][tileX] == 1;
+    return world->level->mapArr[tileY][tileX] == '#';
 }

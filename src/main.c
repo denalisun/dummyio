@@ -3,7 +3,6 @@
 #include "game/zombie.h"
 #include "game/ui.h"
 #include "game/world.h"
-#include "game/gun.h"
 #include "game/state.h"
 #include "game/game.h"
 #include "game/menu.h"
